@@ -51,20 +51,10 @@ if (window.hljs) {
 <div id="TOC">
 <ul>
 <li><a href="#the-distribution-of-data">The Distribution of Data</a><ul>
-<li><a href="#measures-of-central-tendency">Measures of central tendency</a><ul>
-<li><a href="#mean">Mean</a></li>
-<li><a href="#median">Median</a></li>
-<li><a href="#mode">Mode</a></li>
-</ul></li>
-<li><a href="#measures-of-dispersion">Measures of dispersion</a><ul>
-<li><a href="#standard-deviation">Standard deviation</a></li>
-<li><a href="#quartiles">Quartiles</a></li>
-</ul></li>
+<li><a href="#measures-of-central-tendency">Measures of central tendency</a></li>
+<li><a href="#measures-of-dispersion">Measures of dispersion</a></li>
 <li><a href="#skew">Skew</a></li>
-<li><a href="#outliers">Outliers</a><ul>
-<li><a href="#mean-vs.median">Mean vs. median</a></li>
-<li><a href="#median-absolute-deviation-mad">Median absolute deviation (MAD)</a></li>
-</ul></li>
+<li><a href="#outliers">Outliers</a></li>
 </ul></li>
 <li><a href="#intervals">Intervals</a><ul>
 <li><a href="#confidence-intervals">Confidence intervals</a></li>
@@ -183,7 +173,7 @@ if (window.hljs) {
 <h3>Mean vs. median</h3>
 <p>In the presence of outliers, <strong>the mean is more susceptible to skew than the median</strong>. This is because the mean is weighted by each observation in a sample. The median is not – it is simply the middle value.</p>
 <p>E.g. in the following sample, nine observations are between 21 and 22, and one outlier is above 80:</p>
-<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.72 and the median is <span class="math inline">\(m =\)</span> 21.55. Clearly the median is a more representative measure of central tendency than the mean.</p>
+<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.73 and the median is <span class="math inline">\(m =\)</span> 21.55. Clearly the median is a more representative measure of central tendency than the mean.</p>
 <p>Strong outliers drag the mean in the direction of skew (in this case positive). This is why under positive skew the mean is larger than the median, and vice versa.</p>
 <p>Estimators are said to be <strong>robust</strong> if they can cope with outliers. The median is a robust measure of central tendency; the mean is not. However the mean is generally a more precise statistic.</p>
 </div>
