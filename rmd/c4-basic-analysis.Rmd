@@ -28,7 +28,7 @@ library(rsconnect)
 ```
 
 ```{r, include=FALSE}
-paygap <- read.csv('./data/gender-paygap-2019.csv')
+paygap <- read.csv('./data/gender-paygap-2018.csv')
 paygap <- paygap %>%
   mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
 ```

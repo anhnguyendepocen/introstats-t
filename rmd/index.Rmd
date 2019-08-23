@@ -36,11 +36,13 @@ library(rsconnect)
 \newcommand{\sumin}{\sum_i^n}
 \newcommand{\Bias}{\text{Bias}}
 
+\newcommand{\head}[2]{\text{#1} \hspace{0.5cm} \text{#2}}
+
 --- 
 
 \ 
 
-$$\large{\text{PART I - ELEMENTS}}$$
+# PART I -- ELEMENTS
 
 - chapter 1 -- The R Environment 
 - chapter 2 -- Getting Started with Data
@@ -50,7 +52,7 @@ $$\large{\text{PART I - ELEMENTS}}$$
 
 \ 
 
-$$\large{\text{PART I}} \frac 12 \; \large{\text{- A PROBABILISTIC BRIDGE}}$$
+$$\large{\text{PART I}} \frac 12 \hspace{0.5cm} \large{\text{A PROBABILISTIC BRIDGE}}$$
 
 - chapter 7 -- Probability Axioms 
 - chapter 8 -- Random Variables and Distributions
