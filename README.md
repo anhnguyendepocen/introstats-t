@@ -1,11 +1,8 @@
-# introstats
-
-
-## PART I
+## PART I - ELEMENTS
 
 chapter 01 [The R Environment](faffing.html)
 
 
-## PART II
+## PART I.ii - PROBABILITY
 
-$\frac{1}{2}$
+
