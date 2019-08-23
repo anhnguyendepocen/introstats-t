@@ -1,8 +1,9 @@
 ---
-title: "The R Environment"
+title: 'chapter 1 The R Environment'
 output:
   tufte::tufte_html:
-    tufte_features: ["fonts","background"]
+    tufte_features: ['fonts','background']
+    toc: true 
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: xelatex
@@ -36,9 +37,9 @@ library(rsconnect)
 \newcommand{\sumin}{\sum_i^n}
 \newcommand{\Bias}{\text{Bias}}
 
-# Installing R and RStudio 
+---
 
---- 
+# Installing R and RStudio 
 
 R is a programming language for statistical computing. To use R on your computer, you will need to install both R and RStudio.  
 
