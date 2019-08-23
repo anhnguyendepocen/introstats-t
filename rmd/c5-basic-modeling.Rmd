@@ -1,5 +1,5 @@
 ---
-title: 'chapter 4 Basic Data Analysis'
+title: 'chapter 5 Basic Data Modeling'
 output:
   tufte::tufte_html:
     tufte_features: ['fonts','background']
