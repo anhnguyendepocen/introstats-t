@@ -1,0 +1,188 @@
+---
+title: 'chapter 4 Basic Data Analysis'
+output:
+  tufte::tufte_html:
+    tufte_features: ['fonts','background']
+    toc: true
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(extraDistr)
+library(gridExtra)
+library(latex2exp)
+library(moments)
+library(bookdown)
+library(rsconnect)
+```
+
+```{r, include=FALSE}
+paygap <- read.csv('./data/gender-paygap-2019.csv')
+paygap <- paygap %>%
+  mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
+nycheat <- read.csv('./data/nyc-heatwave.csv')
+```
+
+\newcommand{\E}{\text{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\SD}{\text{SD}}
+\newcommand{\SE}{\text{SE}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\Cor}{\text{Cor}}
+\renewcommand{\P}{\text{P}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\sumin}{\sum_i^n}
+\newcommand{\Bias}{\text{Bias}}
+
+---
+
+# Learning From Data 
+
+When two (or more) variables are related, you can build a statistical model that identifies the mathematical relationship between them. Data modeling has two important purposes:  
+
+- **prediction** -- predicting an outcome variable based on a set of predictor variables
+- **causal inference** -- determining the causal relationships between variables  
+
+Using models to learn from data is an important part of statistics, machine learning, and artificial intelligence. Some examples of learning problems:
+
+- predict the price of a stock 6 months from now, using economic data and measures of company performance
+- predict which candidate will win an election, based on poll data and demographic indicators
+- identify the variables causing global temperature and sea level changes
+    + https://climate.nasa.gov/evidence/
+- identify patterns in images to train machine-learning algorithms
+    + https://qz.com/495614/computers-can-now-paint-like-van-gogh-and-picasso/
+
+There are many approaches to building models to learn from data. Linear regression is one of the simplest. Although it predates the computer era, and more modern techniques have since been devised -- such as neural networks, tree-based models, and ML -- linear regression is still an important part of statistical inference, and there are many reasons to study and use it.  
+
+
+
+
+
+
+\ 
+
+---
+
+# Simple Linear Regression 
+
+Linear regression is a technique for modeling *linear* relationships between variables.  
+
+In its simplest form, a linear model has one **response variable** and one **predictor variable**. The response variable should be in some way dependent on the predictor, i.e. changes in the predictor should induce changes in the response variable.  
+
+In linear regression, the relationship between the predictor and response is modeled using a linear function (i.e. a straight line; think $y=mx+c$). The linear function is known as a **regression line** -- you can think of it as essentially a line of best fit for the data. 
+
+The plot below shows the relationship between temperature (response) and vegetation (predictor) from the NYC heatwave data, with a regression line overlaid using `stat_smooth(method='lm')`:
+
+```{r}
+ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+  geom_point(size=1) +
+  stat_smooth(method='lm') +           # overlay regression line
+  xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
+  theme_bw()
+```
+
+A linear model specifies the response variable as a function of the predictor (temperature as a function of relative vegetation). Simple linear models have the following functional form: 
+
+$$y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$$
+
+where:
+
+- $y$ is the response variable 
+- $x$ is the predictor variable
+- $\beta_0$ is the $y$-intercept of the regression line (the $y$-value when $x=0$)
+- $\beta_1$ is the slope of the regression line (the change in $y$ for every unit change in $x$; rise/run)
+- $\varepsilon$ is the error term, or the distance between each data point and the regression line
+
+The subscript $i$ denotes an individual observation in the data, where $i = 1,...,n$ and $n$ is the number of observations in the dataset. 
+
+
+\ 
+
+## The regression coefficients
+
+The intercept and slope, $\beta_0$ and $\beta_1$, are known as the **coefficients** or **parameters** of a regression. 
+
+The goal of linear regression (and indeed any parametric modeling technique) is to estimate the parameters of the model. Once $\beta_0$ and $\beta_1$ are known, you can build a linear model, since linear functions are uniquely parametrized by slope and intercept.  
+
+In R, you can use the `lm()` function to perform linear regression and compute the coefficients for you. The first argument is the regression formula (in the form `y ~ x`) and the second argument is the data frame containing the relevant variables. E.g. the following code regresses temperature on vegetation from the NYC heatwave data: 
+
+```{r}
+reg1 <- lm(temperature ~ ndvi, data = nycheat)
+```
+
+You can view the results by calling `summary()` on the saved regression data:  
+
+```{r}
+summary(reg1)
+```
+
+Based on the data provided, the $y$-intercept of the model is estimated to be $\beta_0 =$ `r toString(round(reg1$coefficients[1],3))` and the slope to be $\beta_1 =$ `r toString(round(reg1$coefficients[2],3))`.   
+
+Substituting these values gives the following model for the relationship between temperature and relative vegetation: 
+
+$$y_i = 92.40 - 19.46x_i + \varepsilon_i$$
+
+This model suggests that as the vegetation index of an area in NYC incraeses by 1, the temperature decreases by 19.46 F.  
+
+
+
+\ 
+
+---
+
+# Multiple Regression 
+
+Multiple regression is a generalization of the simple linear model to include many predictors rather than just one. 
+
+A **multiple regression** model has the following functional form:
+
+$$y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_k x_{ki} + \varepsilon_i$$
+
+where $x_1, x_2, ..., x_k$ are a set of $k$ predictor variables and $\beta_1, \beta_2, ..., \beta_k$ are their coefficients. The subscript $i$ still denotes an individual observation in the data.  
+
+E.g. consider the following multiple regression model for temperature: 
+
+```{r}
+reg2 <- lm(formula = temperature ~ ndvi + albedo + building_height + pop_density, data = nycheat)
+summary(reg2)
+```
+
+In a multiple regresion model, the coefficient on a predictor describes how the response changes for a unit change in that predictor, *while holding all the other predictors constant*. 
+
+Thus the coefficient on ndvi, -12.92, suggests that when the vegetation index increases by 1, the temperature decreases by 12.92 F, *holding albedo, building height, and population density constant*. Note how the coeffient on ndvi in the multiple regression model is smaller than that in the simple model -- this is because the multiple regression model effectively controls for the other variables, attempting to isolate the singular effect of ndvi on temperature.   
+
+
+
+\ 
+
+---
+
+# Categorical Predictors (needs work)
+
+Predictor variables do not have to be numeric to be included in a regression model. 
+
+E.g. the following model regresses temperature on ndvi (numeric) and area (categorical): 
+
+```{r}
+reg3 <- lm(formula = temperature ~ ndvi + area, data = nycheat)
+summary(reg3)
+```
+
+Notice how each category appears as a separate predictor, with its own coefficient.  
+
+Note also how one of the categories is missing -- Crown Heights Brooklyn. This is because R uses one of the categories as a baseline which the other coefficients are relative to. The baseline category is omitted from the output.  
+
+
+
+
+

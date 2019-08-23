@@ -40,7 +40,7 @@ library(rsconnect)
 
 \ 
 
-$$\Large{\text{PART I - ELEMENTS}}$$
+$$\large{\text{PART I - ELEMENTS}}$$
 
 - chapter 1 -- The R Environment 
 - chapter 2 -- Getting Started with Data
@@ -50,7 +50,7 @@ $$\Large{\text{PART I - ELEMENTS}}$$
 
 \ 
 
-$$\Large{\text{PART I}} \; \frac 12 \; \Large{\text{- A PROBABILISTIC BRIDGE}}$$
+$$\large{\text{PART I}} \frac 12 \; \large{\text{- A PROBABILISTIC BRIDGE}}$$
 
 - chapter 7 -- Probability Axioms 
 - chapter 8 -- Random Variables and Distributions
@@ -58,4 +58,4 @@ $$\Large{\text{PART I}} \; \frac 12 \; \Large{\text{- A PROBABILISTIC BRIDGE}}$$
 
 \ 
 
-$$\Large{\text{PART II -- VARIABILITY}}$$ 
+$$\large{\text{PART II - VARIABILITY}}$$ 

@@ -1,0 +1,319 @@
+---
+title: 'chapter 3 Wrangling and Visualizing Data'
+output:
+  tufte::tufte_html:
+    tufte_features: ['fonts','background']
+    toc: true
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(extraDistr)
+library(gridExtra)
+library(latex2exp)
+library(moments)
+library(bookdown)
+library(rsconnect)
+```
+
+```{r, include=FALSE}
+paygap <- read.csv('./data/gender-paygap-2019.csv')
+paygap <- paygap %>%
+  mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
+```
+
+\newcommand{\E}{\text{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\SD}{\text{SD}}
+\newcommand{\SE}{\text{SE}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\Cor}{\text{Cor}}
+\renewcommand{\P}{\text{P}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\sumin}{\sum_i^n}
+\newcommand{\Bias}{\text{Bias}}
+
+---
+
+# Wrangling Data
+
+\ 
+
+## Indexing
+
+Elements in a vector, matrix, or data frame can be extracted using square brackets (numerical indexing). Indexing in R starts at 1 (in some other languages such as Python indexing starts at 0).   
+
+Below are some examples of indexing from the pay gap data:
+
+```{r}
+# extract the element in the 1st row and 4th column
+paygap[1,4]
+
+# extract rows 5-7 from columns 8-10
+paygap[5:7,8:10]
+```
+
+\ 
+
+## Extracting with $
+
+The extract operator, `$`, can extract a named element from a list. Since a data frame is a list, the `$` operator can be used to extract columns from a data frame: 
+
+```{r}
+# extract column 'PropFemaleTopQuartile'
+fem_topquartile <- paygap$PropFemaleTopQuartile
+```
+
+In the above code the extracted variable was assigned to a new data object, `fem_topquartile`.  
+
+\ 
+
+## Selecting columns
+
+Use `select()`:  
+
+```{r}
+# select columns 'PropMaleTopQuartile' and 'PropFemaleTopQuartile'
+topquartile <- select(paygap, PropMaleTopQuartile, PropFemaleTopQuartile)
+```
+
+The first argument in the `select()` function is the data object you are selecting from, and subsequent arguments are the variable names you want to select.  
+
+Now you have a new data frame containing only these two variables:
+
+```{r}
+head(topquartile)
+```
+
+
+\ 
+
+## Renaming columns
+
+Use `rename()`:
+
+```{r}
+# rename 'EmployerName' to 'Company'
+paygap <- rename(paygap, Company = EmployerName)
+```
+
+Note the modification was assigned to the original data frame, `paygap`, (thus modifying the original data). See the modification below: 
+
+```{r, class.output = 'scroll'}
+head(paygap)
+```
+
+\ 
+
+## Adding/changing columns
+
+Use `mutate()`:
+
+```{r}
+# add new column that calculates the difference between 'MaleBonusPercent' and 'FemaleBonusPercent'
+paygap <- mutate(paygap, DiffBonusPercent = MaleBonusPercent - FemaleBonusPercent)
+```
+
+\ 
+
+## Filtering data
+
+Use `filter()`:
+
+```{r}
+# filter for data only from companies with 20000+ employees
+paygap_hugefirms <- filter(paygap, EmployerSize == '20000+')
+```
+
+Note the double equals sign, `==`. In R (and many other languages) a double equals sign represents equality (LHS equals RHS) while a single equals sign represents variable assignment.  
+
+\ 
+
+## Piping
+
+The pipe operator, `%>%`, is useful for performing functions simultaneously.  
+
+Theoretically: say you have an object, `x`, and you want to perform three functions on it: `f()`, `g()`, and `h()`. You could do:
+
+```
+f(x)
+g(x)
+h(x)
+```
+
+Running these three lines of code sequentially would the run `x` through `f()`, then run the result through `g()`, then run that result through `h()`. A cleaner way to do this is by running it all in one 'pipe':
+
+```
+x %>% f() %>% g() %>% h()
+```
+
+In short, the pipe operator forwards ('pipes') the values on its left hand side into the expression(s) on its right hand side.  
+
+E.g. say you want to take the pay gap data, filter for companies with 20000+ employees, drop the column `EmployerSize`, and add a new column calculating the difference between female and male bonuses: 
+
+```{r}
+paygap <- paygap %>%
+  filter(EmployerSize == '20000+') %>%
+  select(-EmployerSize) %>%
+  mutate(DiffBonusPercent = MaleBonusPercent - FemaleBonusPercent)
+```
+
+Brilliant.  
+
+\ 
+
+## Aggregating data
+
+Aggregating data is useful if you want to find summary statistics across a particular group of the data. When aggregating data you must specify your grouping variable(s) (usually categorical variables), and you must perform some function (usually a sum or mean) on the other variables.  
+
+There are many ways to aggregate data. A simple way is using `group_by()` to specify the grouping variable(s) and `summarize()` to specify the function you want to perform on the non-grouping variable(s).  
+
+E.g. to compare the difference in hourly wages between women and men (`DiffMeanHourlyPercent`) across employer size: 
+
+```{r, include=FALSE}
+paygap <- read.csv('./data/gender-paygap-2018.csv')
+paygap <- paygap %>%
+  mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
+```
+
+```{r, warning=FALSE}
+hourlywagegap <- paygap %>%
+  select(DiffMeanHourlyPercent, EmployerSize) %>%                   # select 'DiffMeanHourlyPercent' and 'EmployerSize'
+  group_by(EmployerSize) %>%                                        # group by 'EmployerSize'
+  summarize(DiffMeanHourlyPercent = mean(DiffMeanHourlyPercent))    # calculate the mean of 'DiffMeanHourlyPercent' for each category 
+
+hourlywagegap
+```
+
+\ 
+
+## Dealing with missing data
+
+If your data contains missing values (NA values), some functions may not run as expected:
+
+```{r}
+some_numbers <- c(4,5,6,7,NA,8)
+
+mean(some_numbers)
+```
+
+If you want the function to skip all missing values, you should specify the argument `na.rm = TRUE` (by default it is set to `FALSE` for most functions):
+
+```{r}
+mean(some_numbers, na.rm = TRUE)
+```
+
+
+
+\ 
+
+---
+
+# Visualizing Data
+
+`ggplot2` is the main plotting library in R. Note although the package name is `ggplot2`, the function call is simply `ggplot()`. To make a plot you need to provide `ggplot()` with two arguments, `data` and `mapping`:
+
+- `data` -- the data frame 
+- `mapping` -- an aesthetic mapping for variable(s) go on which axes  
+
+The following examples will demonstrate how to use `ggplot()`. Here is a ggplot cheatsheet (`insert link`).  
+
+\ 
+
+## Histograms
+
+Histograms are a good way to visualize the distribution of data, since they display the frequency (or relative frequency) of observations within specified intervals or 'bins'. 
+
+To plot a histogram you must specify `geom_histogram()` after the main function call. Histograms only require one variable (an aesthetic mapping for the $x$-axis; the $y$-axis is simply frequency).  
+
+The following code plots a histogram of the variable `PropFemaleTopQuartile` (the proportion of females in the top-earning quartile): 
+
+```{r}
+ggplot(data = paygap, mapping = aes(x = PropFemaleTopQuartile)) + 
+  geom_histogram(bins = 50)
+```
+
+If you want relative frequency on the $y$-axis (a density plot) you can specify the aesthetic mapping `y = ..density..` in `geom_histogram()`:
+
+```{r}
+ggplot(data = paygap, mapping = aes(x = PropFemaleTopQuartile)) + 
+  geom_histogram(bins = 50, aes(y = ..density..))
+```
+
+You can make the plot prettier by adding axis labels and changing the colors and theme:
+
+```{r}
+ggplot(data = paygap, mapping = aes(x = PropFemaleTopQuartile)) + 
+  geom_histogram(bins = 50, aes(y = ..density..), fill = 'lightblue') +
+  xlab('%') +
+  ggtitle('Proportion of females in the top-earning quartile') +
+  theme_light()
+```
+
+
+## Scatterplots
+
+```{r, include=FALSE}
+paygap <- read.csv('./data/gender-paygap-2019.csv')
+paygap <- paygap %>%
+  mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
+```
+
+To make a scatterplot you must specify `geom_point()` after the main function call. Scatterplots require two variables.  
+
+Below is a scatterplot of `MaleBonusPercent` on `PropMaleTopQuartile`:
+
+```{r}
+ggplot(data = paygap, mapping = aes(x = PropMaleTopQuartile, y = MaleBonusPercent)) + 
+  geom_point() +
+  theme_light()
+```
+
+## Box & Whisker Plots 
+
+```{r, include=FALSE}
+paygap <- read.csv('./data/gender-paygap-2018.csv')
+paygap <- paygap %>%
+  mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
+```
+
+To make a box and whisker plot you must specify `geom_boxplot()` after the main function call. Box and whisker plots require two variables; one should be categorical and the other should be numeric.  
+
+Below is a box and whisker plot of the proportion of females in the top earning quartile across employer size: 
+
+```{r}
+ggplot(data = paygap, mapping = aes(x = EmployerSize, y = PropFemaleTopQuartile)) +
+  geom_boxplot() +
+  xlab('Employer size') +
+  ylab('Proportion of females in the top earning quartile') +
+  theme_light()
+```
+
+You can see R marks outliers (values substantially outside the interquartile range) as separate points.  
+
+\ 
+
+## Tables (keep?)
+
+One way (among many) to create elegant tables in R is using `kable()` (from the package `kableExtra`). Below are some examples:
+
+```{r}
+library(kableExtra)
+
+kable(paygap[10:20, 1:5], caption = 'preview') 
+```
+
+
+
+
+
