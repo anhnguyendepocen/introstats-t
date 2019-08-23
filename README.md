@@ -1,6 +1,6 @@
-## introstats
+# introstats
 
 
-[link](toc.html)
+## PART I
 
-[faffing](faffing.html)
+chapter 01 [The R Environment](faffing.html)
