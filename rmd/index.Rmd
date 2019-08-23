@@ -1,0 +1,61 @@
+---
+title: 'introstats'
+output:
+  tufte::tufte_html:
+    tufte_features: ['fonts','background']
+  tufte::tufte_handout:
+    citation_package: natbib
+    latex_engine: xelatex
+  tufte::tufte_book:
+    citation_package: natbib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(kableExtra)
+library(extraDistr)
+library(gridExtra)
+library(latex2exp)
+library(moments)
+library(bookdown)
+library(rsconnect)
+```
+
+\newcommand{\E}{\text{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\SD}{\text{SD}}
+\newcommand{\SE}{\text{SE}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\Cor}{\text{Cor}}
+\renewcommand{\P}{\text{P}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\sumin}{\sum_i^n}
+\newcommand{\Bias}{\text{Bias}}
+
+--- 
+
+\ 
+
+$$\Large{\text{PART I - ELEMENTS}}$$
+
+- chapter 1 -- The R Environment 
+- chapter 2 -- Getting Started with Data
+- chapter 3 -- Wrangling and Visualizing Data
+- chapter 4 -- Basic Data Analayis
+- chapter 5 -- Basic Data Modeling 
+
+\ 
+
+$$\Large{\text{PART I}} \; \frac 12 \; \Large{\text{- A PROBABILISTIC BRIDGE}}$$
+
+- chapter 7 -- Probability Axioms 
+- chapter 8 -- Random Variables and Distributions
+- chapter 9 -- Common Probability Distributions
+
+\ 
+
+$$\Large{\text{PART II -- VARIABILITY}}$$ 
