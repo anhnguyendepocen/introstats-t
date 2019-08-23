@@ -42,7 +42,7 @@ library(rsconnect)
 
 \ 
 
-# PART I -- ELEMENTS
+## PART I -- ELEMENTS
 
 - chapter 1 -- The R Environment 
 - chapter 2 -- Getting Started with Data
@@ -50,14 +50,24 @@ library(rsconnect)
 - chapter 4 -- Basic Data Analayis
 - chapter 5 -- Basic Data Modeling 
 
-\ 
-
-$$\large{\text{PART I}} \frac 12 \hspace{0.5cm} \large{\text{A PROBABILISTIC BRIDGE}}$$
+## PART I $\frac 12$ -- A PROBABILISTIC BRIDGE
 
 - chapter 7 -- Probability Axioms 
 - chapter 8 -- Random Variables and Distributions
 - chapter 9 -- Common Probability Distributions
 
-\ 
+## PART II -- VARIABILITY
 
-$$\large{\text{PART II - VARIABILITY}}$$ 
+- chapter 10 -- Samples, Sampling, and Variability
+- chapter 11 -- The Central Limit Theorem
+- chapter 12 -- Interval Estimators
+- chapter 13 -- Tests of Significance 
+- chapter 14 -- Joint Variability
+- chapter 15 -- Variability in Linear Models
+- chapter 16 -- The Assumptions of Linear Models
+- chapter 17 -- Inference from Linear Models 
+
+## PART III -- BIAS
+
+- chapter 18 -- Validity and Bias
+- chapter 19 -- Sampling Bias 
