@@ -4,6 +4,7 @@ output:
   tufte::tufte_html:
     tufte_features: ['fonts','background']
     toc: true
+    toc_depth: 2
   tufte::tufte_handout:
     citation_package: natbib
     latex_engine: xelatex
