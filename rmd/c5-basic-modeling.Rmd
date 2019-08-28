@@ -51,22 +51,19 @@ nycheat <- read.csv('./data/nyc-heatwave.csv')
 
 When two (or more) variables are related, you can build a statistical model that identifies the mathematical relationship between them. Data modeling has two important purposes:  
 
-- **prediction** -- predicting an outcome variable based on a set of predictor variables
-- **causal inference** -- determining the causal relationships between variables  
+- **prediction**--predicting an outcome variable based on a set of predictor variables
+- **causal inference**--determining the causal relationships between variables  
 
 Using models to learn from data is an important part of statistics, machine learning, and artificial intelligence. Some examples of learning problems:
 
-- predict the price of a stock 6 months from now, using economic data and measures of company performance
-- predict which candidate will win an election, based on poll data and demographic indicators
-- identify the variables causing global temperature and sea level changes
+- predicting the price of a stock 6 months from now, using economic data and measures of company performance
+- predicting which candidate will win an election, based on poll data and demographic indicators
+- identifying the variables causing global temperature and sea level changes
     + https://climate.nasa.gov/evidence/
-- identify patterns in images to train machine-learning algorithms
+- identifying patterns in images to train machine-learning algorithms
     + https://qz.com/495614/computers-can-now-paint-like-van-gogh-and-picasso/
 
-There are many approaches to building models to learn from data. Linear regression is one of the simplest. Although it predates the computer era, and more modern techniques have since been devised -- such as neural networks, tree-based models, and ML -- linear regression is still an important part of statistical inference, and there are many reasons to study and use it.  
-
-
-
+There are many approaches to building models to learn from data. Linear regression is one of the simplest. Although it predates the computer era, and more modern techniques have since been devised--such as neural networks, tree-based models, and ML--linear regression is still an important part of statistics and data science.  
 
 
 
@@ -76,23 +73,59 @@ There are many approaches to building models to learn from data. Linear regressi
 
 # Simple Linear Regression 
 
-Linear regression is a technique for modeling *linear* relationships between variables.  
+Linear regression is a technique for modeling *linear* relationships between variables^[Recall the linear relationship between temperature and vegetation from the NYC heatwave data:].  
 
-In its simplest form, a linear model has one **response variable** and one **predictor variable**. The response variable should be in some way dependent on the predictor, i.e. changes in the predictor should induce changes in the response variable.  
+```{r, echo=FALSE, fig.margin = TRUE}
+ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+  geom_point(size=0.5) +
+  xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
+  theme_bw()
+```
 
-In linear regression, the relationship between the predictor and response is modeled using a linear function (i.e. a straight line; think $y=mx+c$). The linear function is known as a **regression line** -- you can think of it as essentially a line of best fit for the data. 
+In its simplest form, a linear model has one **response variable** and one **predictor variable**. The response variable should be in some way dependent on the predictor^[i.e. changes in the predictor variable should be associated with changes in the response variable. You can check the linear dependency of two variables by making a scatterplot or computing Pearson's correlation coefficient. In the above example $r=-0.57$.]. 
+
+In linear regression, the relationship between the predictor and response is modeled using a linear function (a straight line). This is known as a **regression line**--you can think of it as essentially a line of best fit for the data. 
 
 The plot below shows the relationship between temperature (response) and vegetation (predictor) from the NYC heatwave data, with a regression line overlaid using `stat_smooth(method='lm')`:
 
 ```{r}
 ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
-  geom_point(size=1) +
+  geom_point(size=0.5) +
   stat_smooth(method='lm') +           # overlay regression line
   xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
   theme_bw()
 ```
 
-A linear model specifies the response variable as a function of the predictor (temperature as a function of relative vegetation). Simple linear models have the following functional form: 
+\ 
+
+## Functional form 
+
+```{r, echo=FALSE, fig.margin = TRUE, fig.cap = c("A simple linear function, of form $y=mx+c$.", "The relationship between two variables modeled by a linear function (with error bars shown).")}
+ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+  geom_point(size=0.5, color = 'white') +
+  stat_smooth(method='lm', se = FALSE) +
+  xlab('x') + ylab('y') +
+  theme_classic() + 
+  theme(axis.text.x = element_blank(), 
+        axis.text.y = element_blank())
+
+reg1 <- lm(formula = temperature ~ ndvi, data = nycheat)
+
+nycheat <- nycheat %>%
+  mutate(temp_prediction = predict(reg1))
+
+ggplot(data = nycheat, mapping = aes(x = ndvi, y = temperature)) +
+  geom_point(size = 0.7, alpha = 0.5) +
+  stat_smooth(method='lm', se = FALSE) +
+  geom_segment(aes(x = ndvi, xend = ndvi, y = temperature, yend = temp_prediction), 
+               alpha = 0.3, color = 'black') +
+  xlab("vegetation") + ylab("temperature") + 
+  theme_light()
+```
+
+A linear function is uniquely parametrized by two quantities--**slope** and **intercept**. You may be familiar with the equation for a straight line, $y=mx+c$, where $m$ is the slope (rise/run) and $c$ is the $y$-intercept (value of $x$ when $y=0$). When you assign values to the parameters $m$ and $c$, you can draw a straight line.    
+
+In linear regression there is a slightly different notational convention for describing the relationship between $y$ and $x$:
 
 $$y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$$
 
@@ -103,22 +136,26 @@ where:
 - $\beta_0$ is the $y$-intercept of the regression line (the $y$-value when $x=0$)
 - $\beta_1$ is the slope of the regression line (the change in $y$ for every unit change in $x$; rise/run)
 - $\varepsilon$ is the error term, or the distance between each data point and the regression line
+- $i$ denotes an individual observation in the data, where $i = 1,...,n$ and $n$ is the number of observations in the dataset
 
-The subscript $i$ denotes an individual observation in the data, where $i = 1,...,n$ and $n$ is the number of observations in the dataset. 
+The main difference between this form and $y=mx+c$ is the presence of an error term, $\varepsilon$, in the equation. This is included because data points don't fall *exactly* on the regression line. You can visualize the error term as the distance between the data points and the regression line--see the figure on the right.  
 
+The subscript $i$ denotes an individual observation in the data. You can interpret it as essentially a specific equation for a specific observation^[i.e. a row in the dataset.] in the data. E.g. for the 5th observation, $y_{i=5} = \beta_0 + \beta_1 x_{i=5} + \varepsilon_{i=5}$. 
 
 \ 
 
 ## The regression coefficients
 
-The intercept and slope, $\beta_0$ and $\beta_1$, are known as the **coefficients** or **parameters** of a regression. 
+The intercept and slope, $\beta_0$ and $\beta_1$, are known as the **coefficients** or **parameters** of a linear model. 
 
-The goal of linear regression (and indeed any parametric modeling technique) is to estimate the parameters of the model. Once $\beta_0$ and $\beta_1$ are known, you can build a linear model, since linear functions are uniquely parametrized by slope and intercept.  
+The goal of linear regression (and indeed any parametric modeling technique) is to estimate the parameters of the model.
 
-In R, you can use the `lm()` function to perform linear regression and compute the coefficients for you. The first argument is the regression formula (in the form `y ~ x`) and the second argument is the data frame containing the relevant variables. E.g. the following code regresses temperature on vegetation from the NYC heatwave data: 
+In R, you can use `lm()` to perform linear regression and compute the coefficients. The required arguments are `formula` ^[The regression formula, specifying the response and predictor variables, in the form `y ~ x`.] and `data`. 
+
+E.g. the following code regresses temperature on vegetation from the NYC heatwave data: 
 
 ```{r}
-reg1 <- lm(temperature ~ ndvi, data = nycheat)
+reg1 <- lm(formula = temperature ~ ndvi, data = nycheat)
 ```
 
 You can view the results by calling `summary()` on the saved regression data:  
@@ -127,15 +164,24 @@ You can view the results by calling `summary()` on the saved regression data:
 summary(reg1)
 ```
 
-Based on the data provided, the $y$-intercept of the model is estimated to be $\beta_0 =$ `r toString(round(reg1$coefficients[1],3))` and the slope to be $\beta_1 =$ `r toString(round(reg1$coefficients[2],3))`.   
+The regression output is pictured above. The $y$-intercept of the model is calculated to be $\beta_0 =$ `r toString(round(reg1$coefficients[1],3))` and the slope to be $\beta_1 =$ `r toString(round(reg1$coefficients[2],3))`.   
 
-Substituting these values gives the following model for the relationship between temperature and relative vegetation: 
+Substituting these values into the regression formula gives the following equation: 
 
-$$y_i = 92.40 - 19.46x_i + \varepsilon_i$$
+$$y_i = \beta_0 + \beta_1x_i + \varepsilon_i$$
+$$\Longrightarrow \hspace{0.5cm} y_i = 92.40 -19.46 \; x_i + \varepsilon_i$$
 
-This model suggests that as the vegetation index of an area in NYC incraeses by 1, the temperature decreases by 19.46 F.  
+\ 
 
+## Prediction from linear models 
 
+`insert`
+
+\ 
+
+## Extrapolation and its risks
+
+`insert`
 
 \ 
 
@@ -143,25 +189,22 @@ This model suggests that as the vegetation index of an area in NYC incraeses by 
 
 # Multiple Regression 
 
-Multiple regression is a generalization of the simple linear model to include many predictors rather than just one. 
+Multiple regression is a generalization of the simple linear model to include more than one predictor variable. 
 
-A **multiple regression** model has the following functional form:
+A multiple regression model has the following functional form:
 
 $$y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + ... + \beta_k x_{ki} + \varepsilon_i$$
 
-where $x_1, x_2, ..., x_k$ are a set of $k$ predictor variables and $\beta_1, \beta_2, ..., \beta_k$ are their coefficients. The subscript $i$ still denotes an individual observation in the data.  
+where $x_1, x_2, ..., x_k$ are a set of $k$ predictor variables and $\beta_1, \beta_2, ..., \beta_k$ are their coefficients. 
 
-E.g. consider the following multiple regression model for temperature: 
+E.g. the following multiple regression model for predicting temperature: 
 
 ```{r}
 reg2 <- lm(formula = temperature ~ ndvi + albedo + building_height + pop_density, data = nycheat)
 summary(reg2)
 ```
 
-In a multiple regresion model, the coefficient on a predictor describes how the response changes for a unit change in that predictor, *while holding all the other predictors constant*. 
-
-Thus the coefficient on ndvi, -12.92, suggests that when the vegetation index increases by 1, the temperature decreases by 12.92 F, *holding albedo, building height, and population density constant*. Note how the coeffient on ndvi in the multiple regression model is smaller than that in the simple model -- this is because the multiple regression model effectively controls for the other variables, attempting to isolate the singular effect of ndvi on temperature.   
-
+`interpreting coefficients`
 
 
 \ 
@@ -169,19 +212,8 @@ Thus the coefficient on ndvi, -12.92, suggests that when the vegetation index in
 ---
 
 # Categorical Predictors (needs work)
-
-Predictor variables do not have to be numeric to be included in a regression model. 
-
-E.g. the following model regresses temperature on ndvi (numeric) and area (categorical): 
-
-```{r}
-reg3 <- lm(formula = temperature ~ ndvi + area, data = nycheat)
-summary(reg3)
-```
-
-Notice how each category appears as a separate predictor, with its own coefficient.  
-
-Note also how one of the categories is missing -- Crown Heights Brooklyn. This is because R uses one of the categories as a baseline which the other coefficients are relative to. The baseline category is omitted from the output.  
+ 
+`insert`
 
 
 
