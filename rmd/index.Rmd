@@ -44,11 +44,12 @@ library(rsconnect)
 
 ## PART I -- ELEMENTS
 
-- chapter 1 -- The R Environment 
-- chapter 2 -- Getting Started with Data
-- chapter 3 -- Wrangling and Visualizing Data
-- chapter 4 -- Basic Data Analayis
-- chapter 5 -- Basic Data Modeling 
+- chapter 1 -- <a href="./rmd/c1-R.html">The R Environment</a>
+- chapter 2 -- <a href="./rmd/c2-getting-started.html">Getting Started with Data</a></li>
+- chapter 3 -- <a href="./rmd/c3-wrangle-visualize.html">Wrangling and Visualizing Data</a></li>
+- chapter 4 -- <a href="./rmd/c4-basic-analysis.html">Basic Data Analayis</a></li>
+- chapter 5 -- <a href="./rmd/c5-basic-modeling.html">Basic Data Modeling</a></li>
+- chapter 6 -- <a href="./rmd/c6-more-models.html">More Modeling Techniques</a></li>
 
 ## PART I $\frac 12$ -- A PROBABILISTIC BRIDGE
 
@@ -58,10 +59,10 @@ library(rsconnect)
 
 ## PART II -- VARIABILITY
 
-- chapter 10 -- Samples, Sampling, and Variability
-- chapter 11 -- The Central Limit Theorem
-- chapter 12 -- Interval Estimators
-- chapter 13 -- Tests of Significance 
+- chapter 10 -- <a href="./rmd/c10-sampling.html">Samples, Sampling, and Variability</a></li>
+- chapter 11 -- <a href="./rmd/c11-clt.html">The Central Limit Theorem</a></li>
+- chapter 12 -- <a href="./rmd/c12-intervals.html">Interval Estimators</a></li>
+- chapter 13 -- <a href="./rmd/c13-hyptests.html">Significance Tests</a></li>
 - chapter 14 -- Joint Variability
 - chapter 15 -- Variability in Linear Models
 - chapter 16 -- The Assumptions of Linear Models
@@ -69,5 +70,5 @@ library(rsconnect)
 
 ## PART III -- BIAS
 
-- chapter 18 -- Validity and Bias
+- chapter 18 -- <a href="./rmd/c17-validity-bias.html">Validity and Bias</a></li>
 - chapter 19 -- Sampling Bias 

@@ -26,7 +26,6 @@ library(moments)
 library(bookdown)
 library(rsconnect)
 library(tufte)
-library(xfun)
 ```
 
 \newcommand{\E}{\text{E}}
@@ -75,7 +74,7 @@ The two right-hand panes show extra information about your R session--you will c
 
 ---
 
-# R Coding Basics 
+# Some Coding Basics 
 
 Commands you type in the console will not be not saved--the console only evaluates code. To save your code, you must write it in a script file.  
 
@@ -135,7 +134,7 @@ Just like mathematical functions, R functions perform operations on objects. R h
 mean(some_numbers)
 ```
 
-Syntactically, functions are denoted by a name followed by brackets. What you type in the brackets is the function's **argument**--this is the input you are giving to the function. Most functions accept several arguments, some of which are mandatory while others are optional. Usually the first arguments are for specifying the objects you want the function to operate on, and additional arguments are for specifying how you want the function to operate. If you leave optional arguments blank when calling a function, it will operate according to its default settings. 
+Syntactically, functions are denoted by a name followed by brackets. What you type in the brackets is the function's **argument**--this is the input you are giving to the function. Most functions accept several arguments, some of which are mandatory while others are optional. Usually the first argument(s) are for specifying the object(s) you want the function to operate on, and additional arguments are for specifying how you want the function to operate. If you leave optional arguments blank when calling a function, it will operate according to its default settings. 
 
 To learn about the arguments and default settings of a function, you should look up its documentation. You can do this by typing the function's name in the 'Help' tab (bottom right pane). E.g. for the `mean()` function: 
 
@@ -215,11 +214,13 @@ Now go ahead and compile the document (i.e. create the output file) by clicking 
 knitr::include_graphics('./pics/m1c1_pic7.png')
 ```
 
-You should experiment with R Markdown and get used to its syntax. Here is a R Markdown cheatsheet `r xfun::embed_file('./downloads/rmd-cheatsheet.pdf')` to get started.  
+You should experiment with R Markdown and get used to its syntax. Here is a R Markdown <a href="base64 data" download="./downloads/rmd-cheatsheet.pdf">cheatsheet</a> to get you started.  
 
 
 
 \ 
 
 ---
+
+\ 
 
