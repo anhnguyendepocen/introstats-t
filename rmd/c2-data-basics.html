@@ -78,25 +78,26 @@ if (window.hljs) {
 <h1>Viewing Data</h1>
 <p>To view the entire dataset, use the <code>View()</code> command in the console. A table view of the dataset will open as a new tab. Don’t use the <code>View()</code> command for large datasets as it is very memory intensive.</p>
 <p>Another way to see your data is to print the first or last few rows using the <code>head()</code> or <code>tail()</code> function. You can specify exactly how many rows as an additional argument (by default it will print six):</p>
+<p><label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle"><span class="marginnote">Prices are in USD.</span></p>
 <pre class="r"><code>head(nycbnb, n = 5)</code></pre>
-<pre><code>##     id price_USD cleaningfee_USD availability_365 neighborhood   borough
-## 1 2595       204               5              288      Midtown Manhattan
-## 2 3647       105             177              365       Harlem Manhattan
-## 3 3831       639               1              212 Clinton Hill  Brooklyn
-## 4 5022       615             183                0  East Harlem Manhattan
-## 5 5099       177              26              127  Murray Hill Manhattan
-##       city state zipcode latitude longitude property_type       room_type
-## 1 New York    NY   10018 40.75362 -73.98377     Apartment Entire home/apt
-## 2 New York    NY   10027 40.80902 -73.94190     Apartment    Private room
-## 3 Brooklyn    NY   11238 40.68514 -73.95976   Guest suite Entire home/apt
-## 4 New York    NY   10029 40.79851 -73.94399     Apartment Entire home/apt
-## 5 New York    NY   10016 40.74767 -73.97500     Apartment Entire home/apt
-##   accommodates bedrooms bathrooms beds      bed_type square_feet
-## 1            2        0         1    1      Real Bed          NA
-## 2            2        1         1    1 Pull-out Sofa          NA
-## 3            3        1         1    4      Real Bed         500
-## 4            1       NA         1    1      Real Bed          NA
-## 5            2        1         1    1      Real Bed          NA
+<pre><code>##     id price cleaningfee availability365 neighborhood   borough     city
+## 1 2595   204           5             288      Midtown Manhattan New York
+## 2 3647   105         177             365       Harlem Manhattan New York
+## 3 3831   639           1             212 Clinton Hill  Brooklyn Brooklyn
+## 4 5022   615         183               0  East Harlem Manhattan New York
+## 5 5099   177          26             127  Murray Hill Manhattan New York
+##   state zipcode latitude longitude propertytype        roomtype
+## 1    NY   10018 40.75362 -73.98377    Apartment Entire home/apt
+## 2    NY   10027 40.80902 -73.94190    Apartment    Private room
+## 3    NY   11238 40.68514 -73.95976  Guest suite Entire home/apt
+## 4    NY   10029 40.79851 -73.94399    Apartment Entire home/apt
+## 5    NY   10016 40.74767 -73.97500    Apartment Entire home/apt
+##   accommodates bedrooms bathrooms beds       bedtype sqft
+## 1            2        0         1    1      Real Bed   NA
+## 2            2        1         1    1 Pull-out Sofa   NA
+## 3            3        1         1    4      Real Bed  500
+## 4            1       NA         1    1      Real Bed   NA
+## 5            2        1         1    1      Real Bed   NA
 ##   number_of_reviews review_overall review_accuracy review_cleanliness
 ## 1                46             95              10                  9
 ## 2                 0             NA              NA                 NA
@@ -111,13 +112,13 @@ if (window.hljs) {
 ## 5                   10               9            9</code></pre>
 <p>To check the column names of your dataset, use <code>colnames()</code>:</p>
 <pre class="r"><code>colnames(nycbnb)</code></pre>
-<pre><code>##  [1] &quot;id&quot;                   &quot;price_USD&quot;            &quot;cleaningfee_USD&quot;     
-##  [4] &quot;availability_365&quot;     &quot;neighborhood&quot;         &quot;borough&quot;             
+<pre><code>##  [1] &quot;id&quot;                   &quot;price&quot;                &quot;cleaningfee&quot;         
+##  [4] &quot;availability365&quot;      &quot;neighborhood&quot;         &quot;borough&quot;             
 ##  [7] &quot;city&quot;                 &quot;state&quot;                &quot;zipcode&quot;             
-## [10] &quot;latitude&quot;             &quot;longitude&quot;            &quot;property_type&quot;       
-## [13] &quot;room_type&quot;            &quot;accommodates&quot;         &quot;bedrooms&quot;            
-## [16] &quot;bathrooms&quot;            &quot;beds&quot;                 &quot;bed_type&quot;            
-## [19] &quot;square_feet&quot;          &quot;number_of_reviews&quot;    &quot;review_overall&quot;      
+## [10] &quot;latitude&quot;             &quot;longitude&quot;            &quot;propertytype&quot;        
+## [13] &quot;roomtype&quot;             &quot;accommodates&quot;         &quot;bedrooms&quot;            
+## [16] &quot;bathrooms&quot;            &quot;beds&quot;                 &quot;bedtype&quot;             
+## [19] &quot;sqft&quot;                 &quot;number_of_reviews&quot;    &quot;review_overall&quot;      
 ## [22] &quot;review_accuracy&quot;      &quot;review_cleanliness&quot;   &quot;review_communication&quot;
 ## [25] &quot;review_location&quot;      &quot;review_value&quot;</code></pre>
 <p>To check the dimensions of your dataset (number of rows and columns), use <code>dim()</code>:</p>
@@ -157,9 +158,9 @@ if (window.hljs) {
 <pre class="r"><code>class(nycbnb)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <p>The data frame is indeed a common structure for tabular data.</p>
-<p>To check the data type(s) present in the column <code>price_USD</code>:</p>
-<p><label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle"><span class="marginnote">Note the extract operator, <span class="math inline">\(\$\)</span> , which is used to extract a named object from a larger data structure–in this case extract a column from a data frame.</span></p>
-<pre class="r"><code>class(nycbnb$price_USD)</code></pre>
+<p>To check the data type(s) present in the column <code>price</code>:</p>
+<p><label for="tufte-mn-2" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle"><span class="marginnote">Note the extract operator, <span class="math inline">\(\$\)</span> , which is used to extract a named object from a larger data structure–in this case extract a column from a data frame.</span></p>
+<pre class="r"><code>class(nycbnb$price)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>Similarly in the column <code>review_overall</code>:</p>
 <pre class="r"><code>class(nycbnb$review_overall)</code></pre>
