@@ -53,30 +53,109 @@ if (window.hljs) {
 <li><a href="#bernoulli">Bernoulli</a></li>
 <li><a href="#binomial">Binomial</a></li>
 <li><a href="#poisson">Poisson</a></li>
-<li><a href="#uniform">Uniform</a></li>
-<li><a href="#gaussian">Gaussian</a></li>
+<li><a href="#uniform-distribution">Uniform distribution</a></li>
+<li><a href="#normal-distribution">Normal distribution</a></li>
 </ul>
 </div>
 
 <hr />
+<p>Probability distributions are supposed to model real life random processes. Below are some common distributions you will encounter.</p>
+<p> </p>
 <div id="bernoulli" class="section level1">
 <h1>Bernoulli</h1>
+<p>Models random processes with the following features:</p>
+<ul>
+<li>one trial</li>
+<li>two outcomes (success/failure)</li>
+<li>fixed probability of each outcome</li>
+</ul>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(p\)</span>, the probability of a success</li>
+</ul>
+<p>Expected value:</p>
+<p><span class="math display">\[E[X] = P(X=1) + P(X=0) = p \cdot 1 + (1-p) \cdot 0 = p\]</span></p>
+<p>Variance:</p>
+<p>Example:</p>
+<p>You toss a coin. If you get heads, you get 100, if you get tails, you lose 40. Let <span class="math inline">\(X\)</span> be the RV for the outcomes of this experiment. Below is the probability mass function.</p>
+<p><span class="math display">\[E[X] = \sum_i P_i X_i = P(X = heads) + P(X = tails) = 0.5 \cdot 100 + 0.5 \cdot -40 = 30\]</span></p>
 <p> </p>
 </div>
 <div id="binomial" class="section level1">
 <h1>Binomial</h1>
+<p>Models random processes with the following features:</p>
+<ul>
+<li><span class="math inline">\(n\)</span> trials</li>
+<li>two outcomes</li>
+<li>fixed probability of each outcome</li>
+<li>independent events</li>
+</ul>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(n\)</span>, the number of trials</li>
+<li><span class="math inline">\(p\)</span>, the probability of a success</li>
+</ul>
+<p>Usage:</p>
+<p>To find the probability of getting <span class="math inline">\(k\)</span> successes out of <span class="math inline">\(n\)</span> trials. Let <span class="math inline">\(X\)</span> be the RV for the number of successes. Use the binomial formula:</p>
+<p><span class="math display">\[P(X = k) = \begin{pmatrix} n \\ k\end{pmatrix} p^k (1-p)^{n-k}\]</span></p>
+<p>Mean and Variance:</p>
+<p><span class="math display">\[E[X] = np\]</span> <span class="math display">\[Var[X] = np(1-p)\]</span></p>
+<p>Example:</p>
+<p>e.g. (in R)</p>
+<p>the pmf.</p>
+<p>note if n = 1 is just a bernoulli distribution. bernoulli is special case of binomial with only one trial.</p>
 <p> </p>
 </div>
 <div id="poisson" class="section level1">
 <h1>Poisson</h1>
+<p>Models random processes with the following features:</p>
+<ul>
+<li>an event occurs in a fixed interval <span class="math inline">\(k\)</span> times</li>
+<li>the rate at which events occur is fixed</li>
+<li>events cannot occur simultaneously</li>
+<li>events must occur independently</li>
+</ul>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(\lambda\)</span>, the average event rate (in the interval)</li>
+</ul>
+<p>Usage:</p>
+<p>Modelling the number of times an event occurs in an interval of time or space.</p>
+<p>Probability of events:</p>
+<p><span class="math display">\[P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}\]</span></p>
+<p>Example:</p>
+<p>the pmf.</p>
 <p> </p>
 </div>
-<div id="uniform" class="section level1">
-<h1>Uniform</h1>
+<div id="uniform-distribution" class="section level1">
+<h1>Uniform distribution</h1>
+<p>Has a rectangular distribution. Defined over a fixed interval, every value in the interval has the same probability.</p>
+<p>Notation: <span class="math inline">\(\mathcal U[a,b]\)</span>, where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> define the interval.</p>
+<p>Can be continuous or discrete.</p>
+<p>Pdf for continuous uniform distribution:</p>
+<p>Pmf for discrete uniform distribution:</p>
+<p>every possible value in interval has same probability.</p>
+<p>Expected value: <span class="math inline">\(\frac 12 (a+b)\)</span>.</p>
+<p>Variance: <span class="math inline">\(\frac{1}{12} (b-a)^2\)</span>.</p>
+<p>Skewness: 0.</p>
+<p>Kurtosis:</p>
+<p>generate random numbers with uniform distribution.</p>
+<p>expected val. variance. skewness. kurtosis. R.</p>
 <p> </p>
 </div>
-<div id="gaussian" class="section level1">
-<h1>Gaussian</h1>
+<div id="normal-distribution" class="section level1">
+<h1>Normal distribution</h1>
+<p>The bell shaped curve. Defined by mathematical function</p>
+<p><span class="math display">\[f(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac 12 (x-\mu)^2/\sigma^2}\]</span></p>
+<p>Shape of bell curve defined by two parameters, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>Notation: <span class="math inline">\(\mathcal N[\mu, \sigma^2]\)</span></p>
+<p>Expected value: <span class="math inline">\(\mu\)</span>.</p>
+<p>Variance: <span class="math inline">\(\sigma^2\)</span>.</p>
+<p>Skewness: 0.</p>
+<p>Kurtosis: 0.</p>
+<p>two parameters: mean and variance. describe exact functional form. symmetric around mean.</p>
+<p>generating random numbers in a normal distribution.</p>
+<p>expected val. variance. skewness. kurtosis. R.</p>
 </div>
 
 

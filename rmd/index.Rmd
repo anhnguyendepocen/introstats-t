@@ -72,3 +72,18 @@ library(rsconnect)
 
 - chapter 18 -- <a href="./rmd/c17-validity-bias.html">Validity and Bias</a></li>
 - chapter 19 -- Sampling Bias 
+- chapter 20 -- Omitted Variable Bias
+- chapter 21 -- Specification Bias
+- chapter 22 -- Measurement Error Bias 
+
+## PART IV -- MODEL SELECTION 
+
+- chapter 23 -- Bias-Variance Tradeoff
+- chapter 24 -- Model Selection Algorithms 
+- ... 
+
+
+
+
+
+
