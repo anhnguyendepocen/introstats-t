@@ -28,10 +28,10 @@ library(tufte)
 
 ```{r, include=FALSE}
 nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE) %>%
-  mutate(price_USD = as.numeric(price_USD), 
-         cleaningfee_USD = as.numeric(cleaningfee_USD), 
-         availability_365 = as.numeric(availability_365), 
-         square_feet = as.numeric(square_feet))
+  mutate(price = as.numeric(price), 
+         cleaningfee = as.numeric(cleaningfee), 
+         availability365 = as.numeric(availability365), 
+         sqft = as.numeric(sqft))
 ```
 
 \newcommand{\E}{\text{E}}
@@ -65,8 +65,8 @@ nycbnb[1,3]
 ```
 
 ```{r}
-# extract rows 5-7 from columns 1-3
-nycbnb[5:7,1:3]
+# extract rows 5-7 from columns 2-4
+nycbnb[5:7,2:4]
 ```
 
 \ 
@@ -76,8 +76,8 @@ nycbnb[5:7,1:3]
 The extract operator, `$`, can extract a named element from a list. Since a data frame is a list, the `$` operator can be used to extract columns from a data frame:
 
 ```{r}
-# extract column 'price_USD' and assign to new object 'prices'
-prices <- nycbnb$price_USD
+# extract column 'price' and assign to new object 'prices'
+prices <- nycbnb$price
 ```
 
 \ 
@@ -87,8 +87,8 @@ prices <- nycbnb$price_USD
 Use `select()`:  
 
 ```{r}
-# select columns 'price_USD' and 'borough' and assign to new object 'prices_and_borough'
-prices_and_boroughs <- select(nycbnb, price_USD, borough)
+# select columns 'price' and 'borough' and assign to new object 'prices_and_boroughs'
+prices_and_boroughs <- select(nycbnb, price, borough)
 ```
 
 The first argument in the `select()` function is the data frame you are selecting from, and subsequent arguments are variables you want to select.  
@@ -102,12 +102,8 @@ Use `rename()`:
 `r margin_note("Note since these operations are assigned to an existing object, 'nycbnb', you should find they overwrite the contents of the original data frame. If you want to preserve the original data you should assign your changes to a new data object.")`
 
 ```{r}
-# ## append variable names with their respective units
-# # rename 'bodytemp' to 'bodytemp_degF'
-# cardiacdata <- rename(cardiacdata, bodytemp_degF = bodytemp)
-# 
-# # rename 'heartrate' to 'heartrate_bpm'
-# cardiacdata <- rename(cardiacdata, heartrate_bpm = heartrate)
+# rename 'price' to 'priceUSD'
+nycbnb <- rename(nycbnb, priceUSD = price)
 ```
 
 \ 
@@ -116,11 +112,14 @@ Use `rename()`:
 
 Use `mutate()`:
 
-`r margin_note("Where $^oC = ( ^oF - 32) \\cdot \\frac{5}{9}$")`
+`r margin_note("Where 1 square foot = $\\frac{1}{10.764}$ square metres.")`
 
 ```{r}
-# add new column 'revenue' where revenue = price_USD*availability_365 
-nycbnb <- mutate(nycbnb, revenue = price_USD*availability_365)
+# add new column 'sqm'
+nycbnb <- mutate(nycbnb, sqm = sqft / 10.764)
+
+# add new column 'revenueUSD' where revenueUSD = priceUSD*availability365 
+nycbnb <- mutate(nycbnb, revenue = priceUSD*availability365)
 ```
 
 \ 
@@ -166,7 +165,7 @@ E.g. say you want to filter for Manhattan listings, drop the column `borough`, a
 nycbnb_manh <- nycbnb %>%
   filter(borough == 'Manhattan') %>%
   select(-borough) %>%
-  mutate(price_GBP = price_USD*0.8)
+  mutate(priceGBP = priceUSD*0.82)
 ```
 
 \ 
@@ -179,18 +178,19 @@ There are many ways to aggregate data. One way is using `group_by()` to specify 
 
 E.g. to compare average prices across borough, use borough as the grouping variable and calculate a mean for price: 
 
-`r margin_note("Note the variable names are also modified to reflect the aggregated statistics.")`
+`r margin_note("Note the variable name is also modified to reflect the aggregated statistics.")`
 
 ```{r, warning=FALSE}
-# prices_by_borough <- prices_and_boroughs
-#   group_by(borough) %>%                          # group by 'borough'
-#   summarize(avg_price_USD = mean(price_USD))     # aggregate price by mean
+prices_by_borough <- nycbnb %>%
+  select(priceUSD, borough) %>%               # select relevant variables
+  group_by(borough) %>%                       # group by 'borough'
+  summarize(avgpriceUSD = mean(priceUSD))     # aggregate by mean
 ```
 
 The aggregated data frame, `prices_by_borough`, should look as follows: 
 
 ```{r, echo=FALSE}
-#kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
+kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
 ```
 
 
@@ -235,28 +235,28 @@ Histograms are a good way to visualize the distribution of data, since they disp
 
 To plot a histogram you must specify `+ geom_histogram()` after the main function call. Histograms only require one variable (for the $x$-axis; the $y$-axis is simply frequency).  
 
-The following code plots a histogram of the variable `price_USD`:
+Below is a histogram of the prices:
 
 `r margin_note("Note the argument $\\texttt{bins=20}$ in $\\texttt{geom_histogram()}$. This specifies your histogram will have 20 bins. Alternatively you could use the argument $\\texttt{binwidth=XXX}$ to specify that each bin should have a certain width.")`
 
 ```{r}
-ggplot(data = nycbnb, mapping = aes(x = price_USD)) + 
+ggplot(data = nycbnb, mapping = aes(x = priceUSD)) + 
   geom_histogram(bins = 20)
 ```
 
 If you want relative frequency on the $y$-axis (a density plot) you can specify the aesthetic mapping `y = ..density..` in `geom_histogram()`:
 
 ```{r}
-ggplot(data = nycbnb, mapping = aes(x = price_USD)) + 
+ggplot(data = nycbnb, mapping = aes(x = priceUSD)) + 
   geom_histogram(bins = 20, aes(y = ..density..))
 ```
 
 You can make the plot prettier by adding axis labels and changing the colors and theme:
 
 ```{r}
-ggplot(data = nycbnb, mapping = aes(x = price_USD)) + 
+ggplot(data = nycbnb, mapping = aes(x = priceUSD)) + 
   geom_histogram(bins = 20, aes(y = ..density..), fill = 'lightblue') +
-  xlab('daily price in usd') +
+  xlab('price (USD)') +
   ggtitle('distribution of nyc airbnb prices') +
   theme_light()
 ```
@@ -271,7 +271,7 @@ Below is a scatterplot of price on latitude on longitude:
 
 ```{r}
 ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude)) + 
-  geom_point(size=0.1) +
+  geom_point(size = 0.1) +
   theme_light()
 ```
 
@@ -279,7 +279,7 @@ To distinguish between boroughs, you can add another argument to the aesthetic m
 
 ```{r}
 ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough)) + 
-  geom_point(size=0.1) +
+  geom_point(size = 0.1) +
   theme_light()
 ```
 
@@ -290,13 +290,13 @@ ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough
 
 Box and whisker plots require two variables; one should be categorical and the other should be numeric. To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call.  
 
-Below is a box and whisker plot of price (integer) on borough (categorical): 
+Below is a box and whisker plot of price (numeric) on borough (categorical): 
 
 ```{r}
-ggplot(data = nycbnb, mapping = aes(x = borough, y = price_USD)) +
+ggplot(data = nycbnb, mapping = aes(x = borough, y = priceUSD)) +
   geom_boxplot() +
   xlab('borough') +
-  ylab('price in usd') +
+  ylab('price (USD)') +
   theme_light()
 ```
 
@@ -309,7 +309,7 @@ One way (among many) to create elegant tables in your R Markdown output file is 
 \ 
 
 ```{r}
-#kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
+kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
 ```
 
 

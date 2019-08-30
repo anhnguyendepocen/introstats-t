@@ -60,10 +60,10 @@ nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE)
 
 ```{r, include=FALSE}
 nycbnb <- nycbnb %>%
-  mutate(price_USD = as.numeric(price_USD), 
-         cleaningfee_USD = as.numeric(cleaningfee_USD), 
-         availability_365 = as.numeric(availability_365), 
-         square_feet = as.numeric(square_feet))
+  mutate(price = as.numeric(price), 
+         cleaningfee = as.numeric(cleaningfee), 
+         availability365 = as.numeric(availability365), 
+         sqft = as.numeric(sqft))
 ```
 
 
@@ -80,6 +80,8 @@ Note the extra argument, `header = TRUE`, which specifies that the first row of 
 To view the entire dataset, use the `View()` command in the console. A table view of the dataset will open as a new tab. Don't use the `View()` command for large datasets as it is very memory intensive.  
 
 Another way to see your data is to print the first or last few rows using the `head()` or `tail()` function. You can specify exactly how many rows as an additional argument (by default it will print six):  
+
+`r margin_note("Prices are in USD.")`
 
 ```{r}
 head(nycbnb, n = 5)
@@ -137,12 +139,12 @@ class(nycbnb)
 
 The data frame is indeed a common structure for tabular data. 
 
-To check the data type(s) present in the column `price_USD`:
+To check the data type(s) present in the column `price`:
 
 `r margin_note("Note the extract operator, $\\$$ , which is used to extract a named object from a larger data structure--in this case extract a column from a data frame.")`
 
 ```{r}
-class(nycbnb$price_USD)
+class(nycbnb$price)
 ```
 
 Similarly in the column `review_overall`:

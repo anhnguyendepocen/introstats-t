@@ -214,7 +214,7 @@ Now go ahead and compile the document (i.e. create the output file) by clicking 
 knitr::include_graphics('./pics/m1c1_pic7.png')
 ```
 
-You should experiment with R Markdown and get used to its syntax. Here is a R Markdown <a href="base64 data" download="./downloads/rmd-cheatsheet.pdf">cheatsheet</a> to get you started.  
+You should experiment with R Markdown and get used to its syntax. Here is a R Markdown <a href="base64 data" download="./downloads/rmd-cheatsheet.pdf">cheatsheet</a>.  
 
 
 
