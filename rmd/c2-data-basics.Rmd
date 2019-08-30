@@ -52,11 +52,20 @@ There are many functions in R for loading data of various formats:
 
 When loading data you must specify the exact file path in the argument (see below). If you don't know how to find your file path, give it a google. Remember to name your dataset (i.e. assign your dataset to an object). 
 
-The following code loads a csv file with data on the body temperature, heart rate, and gender of 130 subjects.^[Download the data <a href="base64 data" download="./data/normtemp.csv">here</a>. Excuse its mediocrity--there will (hopefully) be more interesting examples in chapters to come. To see where the data actually comes from, click <a href="https://www.ncbi.nlm.nih.gov/pubmed/1302471">here.</a>] Locally the file is called 'normtemp.csv' and it is assigned to an object called `cardiacdata`:  
+The following code loads a csv file with data on every Airbnb listing in New York City, as of August 2019.^[Download the data <a href="base64 data" download="./data/nyc-airbnb.csv">here</a>. It was sourced from <a href="http://insideairbnb.com/about.html">Inside Airbnb</a>, where you can Airbnb data for other cities too.] Locally the file is called 'nyc-airbnb.csv' and it is assigned below to an object called `nycbnb`: 
 
 ```{r}
-cardiacdata <- read.csv('./data/normtemp.csv', header = TRUE)
+nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE)
 ```
+
+```{r, include=FALSE}
+nycbnb <- nycbnb %>%
+  mutate(price_USD = as.numeric(price_USD), 
+         cleaningfee_USD = as.numeric(cleaningfee_USD), 
+         availability_365 = as.numeric(availability_365), 
+         square_feet = as.numeric(square_feet))
+```
+
 
 Note the extra argument, `header = TRUE`, which specifies that the first row of the dataset is a header. If your dataset has no header you should specify `header = FALSE`.^[Here the `=` operator is not used for variable assignment, but rather to specify a parameter for the `read.csv()` function (this is the main difference between the `<-` and `=` operators).]  
 
@@ -73,19 +82,19 @@ To view the entire dataset, use the `View()` command in the console. A table vie
 Another way to see your data is to print the first or last few rows using the `head()` or `tail()` function. You can specify exactly how many rows as an additional argument (by default it will print six):  
 
 ```{r}
-head(cardiacdata, n = 5)
+head(nycbnb, n = 5)
 ```
 
 To check the column names of your dataset, use `colnames()`:
 
 ```{r}
-colnames(cardiacdata)
+colnames(nycbnb)
 ```
 
 To check the dimensions of your dataset (number of rows and columns), use `dim()`:
 
 ```{r}
-dim(cardiacdata)
+dim(nycbnb)
 ```
 
 
@@ -98,9 +107,9 @@ dim(cardiacdata)
 
 In statistics a **variable** usually refers to something that is measured. Data is just observations of some variable--in the cardiac dataset each column contains data pertaining to a specific variable. Data can be continuous, discrete, or categorical.   
 
-- **Continuous data** can take on infinitely many values (real numbers). E.g. the `bodytemp` variable in the cardiac dataset. 
-- **Discrete data** can take on countable values only (integer numbers). E.g. the `heartrate` variable in the cardiac dataset. 
-- **Categorical data** fall into a finite number of categories or distinct groups. E.g. the `gender` variable in the cardiac dataset.^[Even though `gender` is numerically coded in the temperatures dataset, it is still categorical since it only takes on two values, 1 and 2.]  
+- **Continuous data** can take on infinitely many values (real numbers). E.g. the variable `latitude` in the NYC Airbnb data. 
+- **Discrete data** can take on countable values only (integer numbers). E.g. the variable `review_overall` in the NYC Airbnb data. 
+- **Categorical data** fall into a finite number of categories or distinct groups. E.g. the variable `neighborhood` in the NYC Airbnb data. 
 
 Everything in R is an object. When you load data into R, it is parsed into objects. Every object has a **data type**, and different forms of data are parsed into different data types.  
 
@@ -123,21 +132,29 @@ Objects may be combined to form larger data structures. Some common ones:
 You can check an object's data type using `class()`:
 
 ```{r}
-class(cardiacdata)
+class(nycbnb)
 ```
 
-The data frame is indeed a common structure for tabular data. To check the data type(s) in the column `bodytemp`:
+The data frame is indeed a common structure for tabular data. 
+
+To check the data type(s) present in the column `price_USD`:
 
 `r margin_note("Note the extract operator, $\\$$ , which is used to extract a named object from a larger data structure--in this case extract a column from a data frame.")`
 
 ```{r}
-class(cardiacdata$bodytemp)
+class(nycbnb$price_USD)
 ```
 
-Similarly for the column `heartrate`:
+Similarly in the column `review_overall`:
 
 ```{r}
-class(cardiacdata$heartrate)
+class(nycbnb$review_overall)
+```
+
+For categorical variables, the levels/categories are parsed as **factors** in R:
+
+```{r}
+class(nycbnb$borough)
 ```
 
 

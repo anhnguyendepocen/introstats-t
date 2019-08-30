@@ -27,7 +27,11 @@ library(tufte)
 ```
 
 ```{r, include=FALSE}
-cardiacdata <- read.csv('./data/normtemp.csv') 
+nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE) %>%
+  mutate(price_USD = as.numeric(price_USD), 
+         cleaningfee_USD = as.numeric(cleaningfee_USD), 
+         availability_365 = as.numeric(availability_365), 
+         square_feet = as.numeric(square_feet))
 ```
 
 \newcommand{\E}{\text{E}}
@@ -53,16 +57,16 @@ Wrangling data refers to cleaning/manipulating/reorganizing raw data to make it 
 
 Elements in a vector, matrix, or data frame can be extracted using square brackets (numerical indexing). Indexing in R starts at 1 (in some other languages such as Python indexing starts at 0).   
 
-Below are some examples of indexing from the cardiac dataset:
+Below are some examples of indexing from the NYC Airbnb dataset:
 
 ```{r}
 # extract element in 1st row and 3th column
-cardiacdata[1,3]
+nycbnb[1,3]
 ```
 
 ```{r}
 # extract rows 5-7 from columns 1-3
-cardiacdata[5:7,1:3]
+nycbnb[5:7,1:3]
 ```
 
 \ 
@@ -72,8 +76,8 @@ cardiacdata[5:7,1:3]
 The extract operator, `$`, can extract a named element from a list. Since a data frame is a list, the `$` operator can be used to extract columns from a data frame:
 
 ```{r}
-# extract column 'bodytemp' and assign to new object 'temperatures'
-temperatures <- cardiacdata$bodytemp
+# extract column 'price_USD' and assign to new object 'prices'
+prices <- nycbnb$price_USD
 ```
 
 \ 
@@ -83,8 +87,8 @@ temperatures <- cardiacdata$bodytemp
 Use `select()`:  
 
 ```{r}
-# select columns 'gender' and 'heartrate' and assign to new object 'heartrates'
-heartrates <- select(cardiacdata, gender, heartrate)
+# select columns 'price_USD' and 'borough' and assign to new object 'prices_and_borough'
+prices_and_boroughs <- select(nycbnb, price_USD, borough)
 ```
 
 The first argument in the `select()` function is the data frame you are selecting from, and subsequent arguments are variables you want to select.  
@@ -95,21 +99,15 @@ The first argument in the `select()` function is the data frame you are selectin
 
 Use `rename()`:
 
-`r margin_note("Note since these operations are assigned to 'cardiacdata', you should find they overwrite the contents of the original data frame. If you want to preserve the original data you should assign your changes to a new data object.")`
+`r margin_note("Note since these operations are assigned to an existing object, 'nycbnb', you should find they overwrite the contents of the original data frame. If you want to preserve the original data you should assign your changes to a new data object.")`
 
 ```{r}
-## append variable names with their respective units
-# rename 'bodytemp' to 'bodytemp_degF'
-cardiacdata <- rename(cardiacdata, bodytemp_degF = bodytemp)
-
-# rename 'heartrate' to 'heartrate_bpm'
-cardiacdata <- rename(cardiacdata, heartrate_bpm = heartrate)
-```
-
-Below is a preview of the modified cardiac dataset--now with different column names: 
-
-```{r}
-head(cardiacdata)
+# ## append variable names with their respective units
+# # rename 'bodytemp' to 'bodytemp_degF'
+# cardiacdata <- rename(cardiacdata, bodytemp_degF = bodytemp)
+# 
+# # rename 'heartrate' to 'heartrate_bpm'
+# cardiacdata <- rename(cardiacdata, heartrate_bpm = heartrate)
 ```
 
 \ 
@@ -121,26 +119,9 @@ Use `mutate()`:
 `r margin_note("Where $^oC = ( ^oF - 32) \\cdot \\frac{5}{9}$")`
 
 ```{r}
-# add new column with body temperature in degrees celsius
-cardiacdata <- mutate(cardiacdata, bodytemp_degC = (bodytemp_degF - 32)*(5/9))
+# add new column 'revenue' where revenue = price_USD*availability_365 
+nycbnb <- mutate(nycbnb, revenue = price_USD*availability_365)
 ```
-
-`r margin_note("Note the double equals sign, $==$. In R (and many other languages) a double equals sign represents equality (LHS equals RHS) while a single equals sign represents variable assignment.")`  
-
-```{r}
-# change values in gender column to read "Female" and "Male" instead of 1 and 2
-cardiacdata <- mutate(cardiacdata, gender = ifelse(gender == 1, 'Female', 
-                                            ifelse(gender == 2, 'Male', NA)))
-```
-
-`r margin_note("Read about the $\\texttt{ifelse()}$ function <a href='https://www.ncbi.nlm.nih.gov/pubmed/1302471'>here.</a>")`
-
-See these changes below:
-
-```{r}
-head(cardiacdata)
-```
-
 
 \ 
 
@@ -148,9 +129,11 @@ head(cardiacdata)
 
 Use `filter()`:
 
+`r margin_note("Note the double equals sign, $==$. In R (and many other languages) a double equals sign represents equality (LHS equals RHS) while a single equals sign represents variable assignment.")`  
+
 ```{r}
-# filter for data from female subjects only
-cardiacdata_female <- filter(cardiacdata, gender == 'Female')
+# filter data for brooklyn listings only
+nycbnb_bklyn <- filter(nycbnb, borough == 'Brooklyn')
 ```
 
 \ 
@@ -175,15 +158,15 @@ x %>% f() %>% g() %>% h()
 
 In short, the pipe operator forwards ('pipes') the values on its left hand side into the expression(s) on its right hand side.  
 
-E.g. say you want to take the cardiac data, filter for females, drop the column `gender`, and add a new column calculating body temperature in Kelvin:  
+E.g. say you want to filter for Manhattan listings, drop the column `borough`, and add a new column with prices in GBP:  
 
 `r margin_note("Brilliant.")`  
 
 ```{r}
-cardiacdata <- cardiacdata %>%
-  filter(gender == 'Female') %>%
-  select(-gender) %>%
-  mutate(bodytemp_Kelvin = bodytemp_degC + 273)
+nycbnb_manh <- nycbnb %>%
+  filter(borough == 'Manhattan') %>%
+  select(-borough) %>%
+  mutate(price_GBP = price_USD*0.8)
 ```
 
 \ 
@@ -194,30 +177,20 @@ Aggregating data is useful if you want to find summary statistics across particu
 
 There are many ways to aggregate data. One way is using `group_by()` to specify the grouping variable(s) and `summarize()` to specify the function you want to perform on the non-grouping variable(s).^[Another way is using the `aggregate()` function.]  
 
-E.g. to compare averages across gender, use gender as the grouping variable and calculate means for the other variables: 
+E.g. to compare average prices across borough, use borough as the grouping variable and calculate a mean for price: 
 
 `r margin_note("Note the variable names are also modified to reflect the aggregated statistics.")`
 
-```{r, include=FALSE}
-cardiacdata <- read.csv('./data/normtemp.csv') %>%
-  rename(bodytemp_degF = bodytemp, heartrate_bpm = heartrate) %>%
-  mutate(bodytemp_degC = (bodytemp_degF - 32)*(5/9), 
-         gender = ifelse(gender == 1, 'Female', 
-                         ifelse(gender == 2, 'Male', NA)))  
-```
-
 ```{r, warning=FALSE}
-cardiacdata_byGender <- cardiacdata %>%
-  group_by(gender) %>%                                  # group by 'gender'
-  summarize(avg_bodytemp_degF = mean(bodytemp_degF),    # aggregate using means
-            avg_bodytemp_degC = mean(bodytemp_degC), 
-            avg_heartrate_bpm = mean(heartrate_bpm))  
+# prices_by_borough <- prices_and_boroughs
+#   group_by(borough) %>%                          # group by 'borough'
+#   summarize(avg_price_USD = mean(price_USD))     # aggregate price by mean
 ```
 
-The aggregated data frame, `cardiacdata_byGender`, should look as follows: 
+The aggregated data frame, `prices_by_borough`, should look as follows: 
 
 ```{r, echo=FALSE}
-kable(cardiacdata_byGender, caption = 'The aggregated cardiac data.')
+#kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
 ```
 
 
@@ -262,29 +235,29 @@ Histograms are a good way to visualize the distribution of data, since they disp
 
 To plot a histogram you must specify `+ geom_histogram()` after the main function call. Histograms only require one variable (for the $x$-axis; the $y$-axis is simply frequency).  
 
-The following code plots a histogram of the variable body temperature:
+The following code plots a histogram of the variable `price_USD`:
 
 `r margin_note("Note the argument $\\texttt{bins=20}$ in $\\texttt{geom_histogram()}$. This specifies your histogram will have 20 bins. Alternatively you could use the argument $\\texttt{binwidth=XXX}$ to specify that each bin should have a certain width.")`
 
 ```{r}
-ggplot(data = cardiacdata, mapping = aes(x = bodytemp_degC)) + 
+ggplot(data = nycbnb, mapping = aes(x = price_USD)) + 
   geom_histogram(bins = 20)
 ```
 
 If you want relative frequency on the $y$-axis (a density plot) you can specify the aesthetic mapping `y = ..density..` in `geom_histogram()`:
 
 ```{r}
-ggplot(data = cardiacdata, mapping = aes(x = bodytemp_degC)) + 
+ggplot(data = nycbnb, mapping = aes(x = price_USD)) + 
   geom_histogram(bins = 20, aes(y = ..density..))
 ```
 
 You can make the plot prettier by adding axis labels and changing the colors and theme:
 
 ```{r}
-ggplot(data = cardiacdata, mapping = aes(x = bodytemp_degC)) + 
+ggplot(data = nycbnb, mapping = aes(x = price_USD)) + 
   geom_histogram(bins = 20, aes(y = ..density..), fill = 'lightblue') +
-  xlab('body temperature (celsius)') +
-  ggtitle('distribution of body temperatures') +
+  xlab('daily price in usd') +
+  ggtitle('distribution of nyc airbnb prices') +
   theme_light()
 ```
 
@@ -294,19 +267,19 @@ ggplot(data = cardiacdata, mapping = aes(x = bodytemp_degC)) +
 
 Scatterplots require two variables--one for $x$ and one for $y$. To make a scatterplot you must specify `+ geom_point()` after the main function call. 
 
-Below is a scatterplot of heart rate on body temperature:
+Below is a scatterplot of price on latitude on longitude:
 
 ```{r}
-ggplot(data = cardiacdata, mapping = aes(x = heartrate_bpm, y = bodytemp_degC)) + 
-  geom_point() +
+ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude)) + 
+  geom_point(size=0.1) +
   theme_light()
 ```
 
-To distinguish between females and males, you can add another argument to the aesthetic mapping, `color = gender`. This will use different colors for data points corresponding to each gender:^[For obvious reasons, the color mapping requires a categorical variable. A different color will be used for each category.]
+To distinguish between boroughs, you can add another argument to the aesthetic mapping, `color = borough`. This will use different colors for data points corresponding to each borough:^[For obvious reasons, the color mapping requires a categorical variable. A different color will be used for each category.]
 
 ```{r}
-ggplot(data = cardiacdata, mapping = aes(x = heartrate_bpm, y = bodytemp_degC, color = gender)) + 
-  geom_point() +
+ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough)) + 
+  geom_point(size=0.1) +
   theme_light()
 ```
 
@@ -317,17 +290,15 @@ ggplot(data = cardiacdata, mapping = aes(x = heartrate_bpm, y = bodytemp_degC, c
 
 Box and whisker plots require two variables; one should be categorical and the other should be numeric. To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call.  
 
-Below is a box and whisker plot of body temperature (continuous) on gender (categorical): 
+Below is a box and whisker plot of price (integer) on borough (categorical): 
 
 ```{r}
-ggplot(data = cardiacdata, mapping = aes(x = gender, y = bodytemp_degC)) +
+ggplot(data = nycbnb, mapping = aes(x = borough, y = price_USD)) +
   geom_boxplot() +
-  xlab('gender') +
-  ylab('body temperature (celsius)') +
+  xlab('borough') +
+  ylab('price in usd') +
   theme_light()
 ```
-
-You can see R marks outliers (values substantially outside the interquartile range) as separate points.  
 
 \ 
 
@@ -338,13 +309,7 @@ One way (among many) to create elegant tables in your R Markdown output file is 
 \ 
 
 ```{r}
-kable(cardiacdata[1:6, ], caption = 'Rows 1-6 of the cardiac dataset.') 
-```
-
-\ 
-
-```{r}
-kable(cardiacdata_byGender, caption = 'Cardiac dataset aggregated by gender.')
+#kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
 ```
 
 
