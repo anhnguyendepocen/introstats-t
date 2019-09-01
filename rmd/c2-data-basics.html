@@ -52,7 +52,10 @@ if (window.hljs) {
 <ul>
 <li><a href="#loading-data">Loading Data</a></li>
 <li><a href="#viewing-data">Viewing Data</a></li>
-<li><a href="#basic-data-structures-in-r">Basic Data Structures in R</a></li>
+<li><a href="#basic-data-structures">Basic Data Structures</a><ul>
+<li><a href="#forms-of-data">Forms of data</a></li>
+<li><a href="#data-structures-in-r">Data structures in R</a></li>
+</ul></li>
 </ul>
 </div>
 
@@ -68,7 +71,7 @@ if (window.hljs) {
 <li><code>read.table()</code> for huge datasets</li>
 </ul>
 <p>When loading data you must specify the exact file path in the argument (see below). If you don’t know how to find your file path, give it a google. Remember to name your dataset (i.e. assign your dataset to an object).</p>
-<p>The following code loads a csv file with data on every Airbnb listing in New York City, as of August 2019.<label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Download the data <a href="base64 data" download="./data/nyc-airbnb.csv">here</a>. It was sourced from <a href="http://insideairbnb.com/about.html">Inside Airbnb</a>, where you can Airbnb data for other cities too.</span> Locally the file is called ‘nyc-airbnb.csv’ and it is assigned below to an object called <code>nycbnb</code>:</p>
+<p>The following code loads a csv file called ‘nyc-airbnb.csv’ <label for="tufte-sn-1" class="margin-toggle sidenote-number">1</label><input type="checkbox" id="tufte-sn-1" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">1</span> Download the data <a href="base64 data" download="./data/nyc-airbnb.csv">here</a>. It has information on every Airbnb listing in New York City, as of August 2019. It was sourced from <a href="http://insideairbnb.com/about.html">Inside Airbnb</a>, where you can find Airbnb data for other cities too.</span> and assigns it to an object called <code>nycbnb</code>:</p>
 <pre class="r"><code>nycbnb &lt;- read.csv('./data/nyc-airbnb.csv', header = TRUE)</code></pre>
 <p>Note the extra argument, <code>header = TRUE</code>, which specifies that the first row of the dataset is a header. If your dataset has no header you should specify <code>header = FALSE</code>.<label for="tufte-sn-2" class="margin-toggle sidenote-number">2</label><input type="checkbox" id="tufte-sn-2" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">2</span> Here the <code>=</code> operator is not used for variable assignment, but rather to specify a parameter for the <code>read.csv()</code> function (this is the main difference between the <code>&lt;-</code> and <code>=</code> operators).</span></p>
 <p> </p>
@@ -77,8 +80,7 @@ if (window.hljs) {
 <div id="viewing-data" class="section level1">
 <h1>Viewing Data</h1>
 <p>To view the entire dataset, use the <code>View()</code> command in the console. A table view of the dataset will open as a new tab. Don’t use the <code>View()</code> command for large datasets as it is very memory intensive.</p>
-<p>Another way to see your data is to print the first or last few rows using the <code>head()</code> or <code>tail()</code> function. You can specify exactly how many rows as an additional argument (by default it will print six):</p>
-<p><label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle"><span class="marginnote">Prices are in USD.</span></p>
+<p>Another way to view your data is to print the first or last few rows using the <code>head()</code> or <code>tail()</code> function. You can specify exactly how many rows as an additional argument (by default it will print six):</p>
 <pre class="r"><code>head(nycbnb, n = 5)</code></pre>
 <pre><code>##     id price cleaningfee availability365 neighborhood   borough     city
 ## 1 2595   204           5             288      Midtown Manhattan New York
@@ -127,15 +129,22 @@ if (window.hljs) {
 <p> </p>
 <hr />
 </div>
-<div id="basic-data-structures-in-r" class="section level1">
-<h1>Basic Data Structures in R</h1>
-<p>In statistics a <strong>variable</strong> usually refers to something that is measured. Data is just observations of some variable–in the cardiac dataset each column contains data pertaining to a specific variable. Data can be continuous, discrete, or categorical.</p>
+<div id="basic-data-structures" class="section level1">
+<h1>Basic Data Structures</h1>
+<p> </p>
+<div id="forms-of-data" class="section level2">
+<h2>Forms of data</h2>
+<p>In statistics a <strong>variable</strong> usually refers to some characteristic that is measured. In tabular data the columns often correspond to variables, and the rows correspond to single observations or measurements of these variables. Data for a variable can be continuous, discrete, or categorical.</p>
 <ul>
-<li><strong>Continuous data</strong> can take on infinitely many values (real numbers). E.g. the variable <code>latitude</code> in the NYC Airbnb data.</li>
-<li><strong>Discrete data</strong> can take on countable values only (integer numbers). E.g. the variable <code>review_overall</code> in the NYC Airbnb data.</li>
-<li><strong>Categorical data</strong> fall into a finite number of categories or distinct groups. E.g. the variable <code>neighborhood</code> in the NYC Airbnb data.</li>
+<li><strong>Continuous data</strong> can take on infinitely many values (real numbers). E.g. the variable <code>latitude</code> in the Airbnb data.</li>
+<li><strong>Discrete data</strong> can take on countable values only (integer numbers). E.g. the variable <code>bedrooms</code> in the Airbnb data.</li>
+<li><strong>Categorical data</strong> fall into a finite number of categories or distinct groups. E.g. the variable <code>neighborhood</code> in the Airbnb data.</li>
 </ul>
-<p>Everything in R is an object. When you load data into R, it is parsed into objects. Every object has a <strong>data type</strong>, and different forms of data are parsed into different data types.</p>
+<p> </p>
+</div>
+<div id="data-structures-in-r" class="section level2">
+<h2>Data structures in R</h2>
+<p>When you load data into R, it is parsed into objects.<label for="tufte-sn-3" class="margin-toggle sidenote-number">3</label><input type="checkbox" id="tufte-sn-3" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">3</span> In fact, everything stored in R is an object. Programming in R is known as <a href="https://cs.lmu.edu/~ray/notes/paradigms/">object-oriented programming</a>.</span> Every object has a <strong>data type</strong> or <strong>class</strong>, which depends on the kind of values (letters, numbers, etc.) stored in the object. An object’s class determines what you can/not do with it–e.g. you cannot perform multiplication between letters and numbers.</p>
 <p>Below are the five elementary data types in R:</p>
 <ul>
 <li><strong>character</strong> – e.g. <code>'abcd'</code></li>
@@ -144,7 +153,7 @@ if (window.hljs) {
 <li><strong>complex</strong> – complex numbers, e.g. <code>'2+2i'</code></li>
 <li><strong>logical</strong> – either <code>TRUE</code> or <code>FALSE</code></li>
 </ul>
-<p>Objects may be combined to form larger data structures. Some common ones:</p>
+<p>Objects can be combined to form larger data structures. Some common ones:</p>
 <ul>
 <li><strong>vector</strong> – a one-dimensional array; there are two kinds of vectors:
 <ul>
@@ -154,23 +163,23 @@ if (window.hljs) {
 <li><strong>matrix</strong> – a two-dimensional array; all columns have the same data type</li>
 <li><strong>data frame</strong> – a two-dimensional array; columns may have different data types</li>
 </ul>
-<p>You can check an object’s data type using <code>class()</code>:</p>
+<p>The data frame is a common structure for tabular data. You can check an object’s data type using <code>class()</code>.</p>
 <pre class="r"><code>class(nycbnb)</code></pre>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<p>The data frame is indeed a common structure for tabular data.</p>
 <p>To check the data type(s) present in the column <code>price</code>:</p>
-<p><label for="tufte-mn-2" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-2" class="margin-toggle"><span class="marginnote">Note the extract operator, <span class="math inline">\(\$\)</span> , which is used to extract a named object from a larger data structure–in this case extract a column from a data frame.</span></p>
+<p><label for="tufte-mn-1" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-1" class="margin-toggle"><span class="marginnote">Note the extract operator, <span class="math inline">\(\$\)</span> , which is used to extract a named object from a larger data structure–in this case extract a column from a data frame.</span></p>
 <pre class="r"><code>class(nycbnb$price)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<p>Similarly in the column <code>review_overall</code>:</p>
-<pre class="r"><code>class(nycbnb$review_overall)</code></pre>
+<p>The data type(s) in the column <code>bedrooms</code>:</p>
+<pre class="r"><code>class(nycbnb$bedrooms)</code></pre>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
-<p>For categorical variables, the levels/categories are parsed as <strong>factors</strong> in R:</p>
+<p>In categorical data, the levels/categories are parsed as <strong>factors</strong> in R:</p>
 <pre class="r"><code>class(nycbnb$borough)</code></pre>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
 <p> </p>
 <hr />
 <p> </p>
+</div>
 </div>
 
 

@@ -49,7 +49,9 @@ nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE) %>%
 
 # Wrangling Data
 
-Wrangling data refers to cleaning/manipulating/reorganizing raw data to make it more useful for analysis. The `dplyr` package has a host of functions specifically for this purpose. This section will introduce you to a few. 
+Wrangling data refers to cleaning/manipulating/reorganizing raw data to make it more useful for analysis. The `dplyr` package has a host of functions specifically for this purpose. The following examples will demonstrate a few of them. Here is a dplyr <a href="base64 data" download="./downloads/dplyr-cheatsheet.pdf">cheatsheet</a>. 
+
+`r margin_note("For more comprehensive notes on dplyr visit https://dplyr.tidyverse.org/.")`
 
 \ 
 
@@ -73,7 +75,7 @@ nycbnb[5:7,2:4]
 
 ## Extracting
 
-The extract operator, `$`, can extract a named element from a list. Since a data frame is a list, the `$` operator can be used to extract columns from a data frame:
+The extract operator, `$`, can extract a named element from a list. Since a data frame is a kind of list, the `$` operator can be used to extract columns from a data frame:
 
 ```{r}
 # extract column 'price' and assign to new object 'prices'
@@ -178,8 +180,6 @@ There are many ways to aggregate data. One way is using `group_by()` to specify 
 
 E.g. to compare average prices across borough, use borough as the grouping variable and calculate a mean for price: 
 
-`r margin_note("Note the variable name is also modified to reflect the aggregated statistics.")`
-
 ```{r, warning=FALSE}
 prices_by_borough <- nycbnb %>%
   select(priceUSD, borough) %>%               # select relevant variables
@@ -220,12 +220,14 @@ mean(some_numbers, na.rm = TRUE)
 
 # Visualizing Data
 
-`ggplot2` is the main plotting library in R. Note although the package name is `ggplot2`, the function call is simply `ggplot()`. To make a plot you need to provide `ggplot()` with two arguments, `data` and `mapping`:
+The package `ggplot2` is the main plotting library in R. Its main function call is `ggplot()`. To make a plot you must provide `ggplot()` with two arguments, `data` and `mapping`:
 
-- `data` -- the data frame you want to plot
-- `mapping` -- an aesthetic mapping for variable(s) go on which axes  
+- `data` -- the data frame whose variables you want to plot
+- `mapping` -- an aesthetic mapping for which variable(s) go on which axes  
 
-The following examples will demonstrate how to use `ggplot()`. Here is a ggplot <a href="base64 data" download="./downloads/ggplot2-cheatsheet.pdf">cheatsheet</a>.   
+The following examples will demonstrate how to use `ggplot()`. Here is a ggplot <a href="base64 data" download="./downloads/ggplot2-cheatsheet.pdf">cheatsheet</a>.
+
+`r margin_note("For more comprehensive notes on ggplot2 visit https://ggplot2.tidyverse.org/.")`
 
 \ 
 
@@ -235,7 +237,7 @@ Histograms are a good way to visualize the distribution of data, since they disp
 
 To plot a histogram you must specify `+ geom_histogram()` after the main function call. Histograms only require one variable (for the $x$-axis; the $y$-axis is simply frequency).  
 
-Below is a histogram of the prices:
+Below is a histogram of Airbnb prices in NYC:
 
 `r margin_note("Note the argument $\\texttt{bins=20}$ in $\\texttt{geom_histogram()}$. This specifies your histogram will have 20 bins. Alternatively you could use the argument $\\texttt{binwidth=XXX}$ to specify that each bin should have a certain width.")`
 
@@ -265,9 +267,11 @@ ggplot(data = nycbnb, mapping = aes(x = priceUSD)) +
 
 ## Scatterplots
 
-Scatterplots require two variables--one for $x$ and one for $y$. To make a scatterplot you must specify `+ geom_point()` after the main function call. 
+Scatterplots are a good way to visualize the covariation or relationship between two variables. 
 
-Below is a scatterplot of price on latitude on longitude:
+To make a scatterplot you must specify `+ geom_point()` after the main function call. Naturally, scatterplots require two variables--one for $x$ and one for $y$. 
+
+Below is a scatterplot of latitude on longitude:
 
 ```{r}
 ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude)) + 
@@ -283,12 +287,13 @@ ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough
   theme_light()
 ```
 
-
 \ 
 
 ## Box & Whisker Plots 
 
-Box and whisker plots require two variables; one should be categorical and the other should be numeric. To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call.  
+Box and whisker plots are good for visualizing the distributions of a variable across different categories. 
+
+To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call. Box and whisker plots require two variables; one should be categorical and the other should be numeric.  
 
 Below is a box and whisker plot of price (numeric) on borough (categorical): 
 
@@ -304,14 +309,19 @@ ggplot(data = nycbnb, mapping = aes(x = borough, y = priceUSD)) +
 
 ## Tables
 
-One way (among many) to create elegant tables in your R Markdown output file is using `kable()` from the `knitr` package.^[Note `kable()` is optimized for pdf output files--you may have issues if your output format is html.] Below are some examples:
+One way (among many) to create elegant tables in your R Markdown output document is using `kable()` from the `knitr` package.^[Note `kable()` is optimized for pdf output files--you may have issues if your output format is html.] Below are some examples:
+
+\ 
+
+```{r}
+kable(nycbnb[1:10,2:11], caption = 'Preview of NYC Airbnb dataset.')
+```
 
 \ 
 
 ```{r}
 kable(prices_by_borough, caption = 'NYC Airbnb prices aggregated by borough.')
 ```
-
 
 
 

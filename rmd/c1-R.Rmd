@@ -68,15 +68,7 @@ The left-hand pane is the **console**--this is where R code is evaluated and its
 
 The two right-hand panes show extra information about your R session--you will come to learn what they do as you code.    
 
-
-
-\ 
-
----
-
-# Some Coding Basics 
-
-Commands you type in the console will not be not saved--the console only evaluates code. To save your code, you must write it in a script file.  
+Note, commands you type in the console will not be not saved--the console only evaluates code. To save your code, you must write it in a script file.  
 
 To open a new R script file click the icon in the top left and choose R Script, as follows: 
 
@@ -92,19 +84,27 @@ To run code you have written in the script editor, click 'Run' (top right). The 
 knitr::include_graphics('./pics/m1c1_pic3.png')
 ```
 
+
+
 \ 
 
-## Variable assignment
+---
 
-You can create objects using the **assignment operator**, `<-`. This evaluates the expression on its right hand side and assigns the result to the object name on its left.^[Technically you can use either `<-` or `=` for variable assignment. Both do the same thing when used for assignment, though in general there is a subtle difference between the two.]  
+# Some Coding Basics 
 
-E.g. to create a new object called $x$ and assign it the numerical value 12:  
+\ 
+
+## Objects 
+
+Objects are where values are stored. You can create objects using the **assignment operator**, `<-`. This evaluates the expression on its right hand side and assigns the result to the object name on its left.^[Technically you can use either `<-` or `=` for object assignment. Both do the same thing when used for assignment, though in general there is a subtle difference between the two.]  
+
+E.g. to assign the value 12 to a new object called $x$:
 
 ```{r}
 x <- 12
 ```
 
-You can create a **vector**--a one-dimensional array of elements--by writing `c()`, and using commas to separate the elements:
+You can create a **vector**--a one-dimensional array of values--by using `c()`, with commas to separate the values:
 
 `r margin_note("Hashes (#) denote **comments**--anything written after a hash symbol will be skipped by the console when running code. It is a good idea to comment your code, i.e. describe what it is doing.")` 
 
@@ -118,7 +118,7 @@ some_numbers <- c(0,1,2,3,4,5,6,7,8,9)
 some_numbers <- c(0:9)
 ```
 
-The objects you have defined in a session will appear in the Environment pane (top right). You can call an object by simply typing its name. The elements of the object will appear in the console: 
+The objects you have defined in a session will appear in the Environment pane (top right). You can call an object by simply typing its name. The value(s) of the object will appear in the console: 
 
 ```{r}
 some_numbers
@@ -128,7 +128,7 @@ some_numbers
 
 ## R functions
 
-Just like mathematical functions, R functions perform operations on objects. R has many inbuilt functions--e.g. the `c()` function which takes a series of elements and produces a vector array, or `mean()` function which takes a vector array of numbers and returns its average value. 
+Just like mathematical functions, R functions perform operations on objects. R has many inbuilt functions--e.g. the `c()` function which takes a series of values and returns a vector array, or `mean()` function which takes a vector array of numbers and returns its average value. 
 
 ```{r}
 mean(some_numbers)
@@ -166,7 +166,7 @@ To install a package, use the command `install.packages()` in the console. E.g. 
 knitr::include_graphics('./pics/m1c2_pic1.png')
 ```
 
-Once a package is installed, you needn't install it again. But to use a package's functions, you need to load the package into the session using `library()`. You will need to do this every time you enter a new R session.  
+Once a package is installed, you needn't install it again. But to use the functions in a package, you need to load the package into the session using `library()`. You will need to do this every time you enter a new R session.  
 
 ```{r}
 library(tidyverse)
@@ -174,13 +174,7 @@ library(tidyverse)
 
 If you run this code and get the error message "there is no package called 'tidyverse'", you need to first install it, then run `library()` again.  
 
-It is common practice to load packages at the beginning of your script file:
-
-```{r, echo=FALSE}
-knitr::include_graphics('./pics/m1c2_pic2.png')
-```
-
-This will save you the hassle of remembering which packages you used and retyping them each time you enter a new session.  
+It is common practice to load whichever packages you need at the beginning of your script file. This will save you the hassle of remembering which packages you used and retyping them each time you enter a new session.  
 
 
 
@@ -198,7 +192,7 @@ To open a new R Markdown file, click on the top left icon and choose R Markdown.
 knitr::include_graphics('./pics/m1c1_pic5.png')
 ```
 
-Enter a name and title for your document (these can be changed later). You can choose whichever output format you wish, but note that for pdf output you will need to have TeX installed on your computer. For simplicity you should use html output.   
+Enter a name and title for your document (these can be changed later). You can choose whichever output format you wish, but note that for pdf output you will need to have some form of TeX installed on your computer.^[Get it <a href="https://www.latex-project.org/get/">here</a>.] For simplicity you should use html output.   
 
 After choosing your output format you will be greeted by some sample Markdown script, as follows: 
 
@@ -206,7 +200,7 @@ After choosing your output format you will be greeted by some sample Markdown sc
 knitr::include_graphics('./pics/m1c1_pic6.png')
 ```
 
-The grey boxes are **code chunks**. Only stuff written in the code chunks will be treated as code and evaluated in the console. The output will appear after the chunk. Everything outside the code chunks will appear as text in your output document. To insert a new code chunk, click on Code > Insert Chunk (from the menu bar).  
+The grey boxes are **code chunks**. Only stuff written in the code chunks will be treated as code and evaluated in the console. To run a code chunk, click the green arrow in the top right of chunk. The output will be printed below. Everything outside the code chunks will appear as text in your output document. To insert a new code chunk, click on Code > Insert Chunk (from the menu bar) or use a shortcut^[Mac: cmd+option+I. Windows: ctrl+alt+I.].  
 
 Now go ahead and compile the document (i.e. create the output file) by clicking 'Knit'. You will need to have saved the file first. A separate window will open with the output file--you should compare this to the script file and make note of how R Markdown translates from script to its output format.  
 
