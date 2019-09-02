@@ -176,9 +176,11 @@ nycbnb_manh <- nycbnb %>%
 
 Aggregating data is useful if you want to find summary statistics across particular categories in the data. When aggregating data you must specify your grouping variable (which should be categorical), and you must perform some function (usually a sum or mean) on the non-grouping variables (which should be numeric).    
 
-There are many ways to aggregate data. One way is using `group_by()` to specify the grouping variable(s) and `summarize()` to specify the function you want to perform on the non-grouping variable(s).^[Another way is using the `aggregate()` function.]  
+There are many ways to aggregate data. One way is using `group_by()` to specify the grouping variable(s) and `summarize()` to specify the function you want to perform on the non-grouping variable(s). Another way is using <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/aggregate">`aggregate()`</a>.   
 
 E.g. to compare average prices across borough, use borough as the grouping variable and calculate a mean for price: 
+
+`r margin_note("Note, many functions in R accept both US and UK spellings (where there is a difference)--e.g. both $\\texttt{summarise()}$ and $\\texttt{summarize()}$ will work.")`
 
 ```{r, warning=FALSE}
 prices_by_borough <- nycbnb %>%
@@ -279,7 +281,9 @@ ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude)) +
   theme_light()
 ```
 
-To distinguish between boroughs, you can add another argument to the aesthetic mapping, `color = borough`. This will use different colors for data points corresponding to each borough:^[For obvious reasons, the color mapping requires a categorical variable. A different color will be used for each category.]
+To distinguish between boroughs, you can add another argument to the aesthetic mapping, `color = borough`. This will use different colors for data points corresponding to each borough:
+
+`r margin_note("For obvious reasons, the color mapping requires a categorical variable. A different color (or colour) will be used for each category.")`
 
 ```{r}
 ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough)) + 
@@ -293,7 +297,7 @@ ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough
 
 Box and whisker plots are good for visualizing the distributions of a variable across different categories. 
 
-To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call. Box and whisker plots require two variables; one should be categorical and the other should be numeric.  
+To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call. Box and whisker plots require two variables--one should be categorical and the other should be numeric.  
 
 Below is a box and whisker plot of price (numeric) on borough (categorical): 
 
