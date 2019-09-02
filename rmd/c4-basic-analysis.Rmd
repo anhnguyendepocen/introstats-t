@@ -25,6 +25,7 @@ library(latex2exp)
 library(moments)
 library(bookdown)
 library(rsconnect)
+library(tufte)
 ```
 
 ```{r, include=FALSE}
@@ -55,22 +56,20 @@ nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE) %>%
 
 ---
 
-# Of Populations and Samples
+# Working with Sample Data 
 
 Every experiment or study is concerned with answering some question. Some (possibly relevant) examples--
 
 - what is the true extent of the gender pay gap?
 - why is New York City insufferably hot in summer?
 
-Conducting a study involves choosing relevant variables to answer the question, collecting empirical data on these variables, and using some method of analysis to answer the question.  
+Conducting a study involves choosing relevant variables to answer the question, collecting empirical data on these variables, and using some method of analysis to draw inferences from the data. 
 
-Every study has a **population**--this is the relevant set of events or observations required to fully answer the question. E.g. if trying to determine the gender pay gap, the population might be the salary of every single person.  
-
-Before conducting a study, there is often a **hypothesis** or preexisting notion about what the population looks like. The data collected during the study is often used to validate or reject the hypothesis.  
+Every study has a **population**--this is the relevant set of events or observations required to fully answer the question. E.g. if trying to determine the true gender pay gap, the population might be the salary of every single person.  
 
 A **sample** is a subset of the events/observations in a population. Most studies are conducted with samples, since it is often impossible to acquire data on a whole population. 
 
-Below are two examples of sample data collected in order to investigate certain research questions.  
+Below are two examples of sample data related to the questions raised above. 
 
 \ 
 
@@ -100,9 +99,9 @@ kable(nycheat[c(1:3, 196:198, 407:409, 524:526, 807:809, 898:900), ])
 
 ---
 
-# The Distribution of Data
+# Summarizing Data  
 
-When presented with a sample of data, it is useful to first understand its **distribution**. As demonstrated in the previous chapter, histograms are a good way to visualize the **distribution** of observations within a variable.  
+A sample of data is simply a collection of observations--a **distribution**. As demonstrated in the previous chapter, histograms are a good way to visualize the **distribution** of data within a variable.  
 
 From the pay gap data, below is a histogram of the variable `PropFemaleTopQuartile` -- the proportion of females in the top-earning quartile. 
 
@@ -113,13 +112,13 @@ ggplot(aes(x = PropFemaleTopQuartile), data = paygap) +
   theme_bw()
 ```
 
-**Summary statistics** can help extract meaning from a distribution of data. The `summary()` function produces a few common ones: 
+**Summary statistics** are point values that summarize some characteristic of a distribution--e.g. central tendency, spread, skew, etc. They can help extract meaning from a distribution. 
+
+The `summary()` function produces a few common ones: 
 
 ```{r}
 summary(paygap$PropFemaleTopQuartile)
 ```
-
-Summary statistics are point values that attempt to summarize some characteristic of a distribution, e.g. central tendency, spread, skew, etc. 
 
 \ 
 
@@ -241,7 +240,7 @@ plot2 <- ggplot(aes(x = PropMaleTopQuartile), data = paygap) +
 grid.arrange(plot1, plot2, ncol = 2)
 ```
 
-Naturally^[Due to the inherent cis-normativity of the study.] these distributions are mirror images of each other. 
+Naturally^[Due to the cis-normativity of the study.] these distributions are mirror images of each other. 
 
 The distribution for females has **right-skew** (or positive skew), since the tail drags rightwards (in the positive direction). The distribution for males has **left-skew** (negative skew), since the tail drags leftwards (in the negative direction).  
 
@@ -341,18 +340,55 @@ mad(paygap$PropFemaleTopQuartile)
 
 ```
 
-Summary statistics derived from samples of data--such as the sample mean and sample standard deviation--are known as **estimators**, since they use samples to estimate the true values of population parameters.^[E.g. the *true* mean difference in hourly wages between women and men is unknown; but the sample of pay gap data can be used to estimate it.] 
+A summary statistic derived from samples of data--such as the sample mean and sample standard deviation--is known as an **estimator**, since it uses a sample to estimate the true value of a population parameter.^[E.g. the *true* mean difference in hourly wages between females and males is unknown; but the sample of pay gap data can be used to estimate it.] 
 
-The summary statistics introduced above are known as **point estimators** since they estimate a true parameter using a single value. 
-
-There also exist **interval estimators**, which estimate a true parameter using a *range* of values. Often these are more useful than single-valued estimates, as they provide reasonable margins of error when drawing inferences from data.
+The summary statistics introduced above are known as **point estimators** since they use a single value to estimate a population parameter. 
+There also exist **interval estimators**, which use a *range* of values to estimate a population parameter. Often these are more useful than single-valued estimates, as they provide reasonable margins of error when drawing inferences from data.
 
 A **confidence interval** is one example of an interval estimator.  
 
-
-
 \ 
 
+## A confidence interval for the mean
+
+A confidence interval for a mean is a range of values that might contain the true mean of the population distribution. Every confidence interval is associated with a **confidence level**, which describes the approximate probability the true mean lies in the range specified.^[The theory behind this is explained in Part II.] E.g. a 95\% confidence interval for the mean is a range of values where:
+
+$$\P(LB \leq \mu \leq UB) \approx 0.95$$
+
+$LB$ and $UB$ are the lower and upper bounds of the interval, which have an approximately 95\% probability of containing the true mean.  
+
+Below is a function^[Note, this is a user-written function. Running this code will define a new function in the Environment, called $\texttt{confidence_interval}$. Once defined, this function can be used to compute a confidence interval for the mean of a sample of data. For more on writing functions in R, click <a href="https://www.statmethods.net/management/userfunctions.html">here</a>.] that takes an array of data and computes a confidence interval for the mean: 
+
+```{r}
+confidence_interval = function(data, conflevel) {
+  xbar = mean(data)          # sample mean 
+  n = length(data)           # sample size 
+  SE = sd(data) / sqrt(n)    # standard error
+  alpha = 1 - conflevel      # alpha
+  
+  lb = xbar + qt(alpha/2, df = n-1) * SE    # calculate lower bound
+  ub = xbar + qt(1-alpha/2, df = n-1) * SE  # calculate upper bound
+  
+  cat(paste(c('sample mean =', round(xbar,3), '\n', 
+              conflevel*100, '% confidence interval:', '\n', 
+              'lower bound =', round(lb,3), '\n', 
+              'upper bound =', round(ub,3))))
+}
+```
+
+The way this function is written, it takes two arguments: `data`--a vector array of data, and `conflevel`--the desired confidence level.  
+
+E.g. 95\% confidence interval for the mean difference in hourly wages between females and males can be computed as follows:
+
+```{r}
+confidence_interval(data = paygap$DiffMeanHourlyPercent, conflevel = 0.95)
+```
+
+The output suggests that the true mean difference in wages is approximately 95\% likely to lie somewhere between 13.93\% and 14.47\%. 
+
+Note there is one important caveat to this claim. A confidence interval computed from sample data (such as the one above) will always be centered on the sample mean, not the true mean. This means the *actual* probability of the interval containing the true mean depends on how close the sample mean is to the true mean. Since the true mean of a distribution is often unknown, there is no way to tell from any one sample of data whether the interval contains the true mean, or the likelihood thereof. Thus the confidence level associated with an interval is only ever approximate--if at all.  
+
+Nonetheless confidence intervals are still useful as they demonstrate the degree of uncertainty in a result, whether the result is accurate or not. There is more theory on confidence intervals in Part II. 
 
 
 
@@ -360,11 +396,113 @@ A **confidence interval** is one example of an interval estimator.
 
 ---
 
-# Relationships Between Variables 
+# Simple Hypothesis Tests 
+
+A **hypothesis** is essentially a preconceived notion or model for what the population looks like. A hypothesis can be based on anything--the results of a previous experiment or even just a hunch. 
+
+Hypothesis testing involves comparing this hypothesis to a (new) sample of data from the population, to determine whether the hypothesis should be accepted or rejected.  
+
+In a study there are two hypotheses:
+
+- **the null hypothesis**, $H_0$, a proposed model for a population 
+- **the alternative hypothesis**, $H_1$, that the proposed model is not true 
+
+The test is deemed **statistically significant** if the sample under scrutiny gives strong evidence to support the alternative hypothesis--i.e. if the data is an unlikely realization of the null. This usually leads to rejecting the null hypothesis.  
+
+Some simple tests are introduced below. There is more theory on hypothesis tests in Part II. 
+
+\ 
+
+## One-sample t-test for a mean 
+
+A one-sample $t$-test compares the mean of a sample of data to some hypothesized value for the population mean. The null and alternative hypotheses are:
+
+- $H_0$: the mean is equal to some specified value $k$
+- $H_1$: the mean is not equal to $k$
+
+E.g. say you hypothesize that the true mean difference in hourly wages between females and males is zero--as perhaps it ought to be. Using the pay gap data, you could test this hypothesis by calculating the mean of `DiffMeanHourlyPercent` and comparing it to the null. In this test the null and alternative hypotheses are:
+
+$$
+\begin{aligned}
+  H_0: \texttt{mean(DiffMeanHourlyPercent)} = 0 \\ 
+  H_1: \texttt{mean(DiffMeanHourlyPercent)} \neq 0
+\end{aligned}
+$$
+
+In R, you can use `t.test()` to carry out the test. The first argument should be the sample of data you are using, and the second, `mu`, is the proposed value for the mean under the null hypothesis: 
+
+```{r}
+t.test(paygap$DiffMeanHourlyPercent, mu = 0)
+```
+
+The observed value of this test is printed at the bottom: $\bar X =$ 14.1985. This tells you that the mean difference between female and male hourly wages is 14.1985\%, according to this sample.  
+
+Now it is up to you whether to reject the null hypothesis or not, on the basis of this evidence. You can use the $p$-value of the test to help you make a decision.  
+
+**The $p$-value of a test is the probability of getting a value at least as extreme as the observed value under the null hypothesis.** The $p$-value will always be between 0 and 1. A small $p$-value means the observed value is unlikely to occur if the null hypothesis were true. A large $p$-value means the observed value is likely to occur if the null hypothesis were true.  
+
+The $p$-value of the test is printed in the third line. In this case it reads `p-value < 2.2e-16`. This is very small indeed. It means there is a near zero probability of observing a 14\% difference in wages if in reality the true difference in wages is zero.  
+
+In other words, this test gives evidence to reject the null hypothesis. You may thus choose to conclude that the average difference in hourly wages between females and males is not zero, based on the evidence in this sample.  
+
+\ 
+
+## Interpreting p-values 
+
+It is conventional to reject the null hypothesis if the $p$-value of a test is smaller than 0.05. However this is an arbitrary (and disputable) cutoff point, and you should use your own intuition to determine whether rejecting the null is a sensible choice, given the context.  
+
+You can, for instance, use confidence intervals to determine whether rejecting the null is sensible. Note how the output of the $t$-test also gives you a 95\% confidence interval for the true mean, based on the sample data. In the example above, it suggests the true mean difference in wages is between 13.93\% and 14.47\%. Since this range is still substantially above zero, it supports your decision to reject the null.  
+
+\ 
+
+## Two-sample t-test for a difference in means
+
+```{r, echo=FALSE}
+# use 2019 dataset for this section
+# because the 2018 data has too many observations
+paygap <- read.csv('./data/gender-paygap-2019.csv')
+paygap <- paygap %>%
+  mutate(EmployerSize = factor(EmployerSize, levels = c('0-249','250-499','500-999','1000-4999','5000-19999','20000+')))
+```
+
+
+A two-sample $t$-test compares the means of two samples of data to see if they are different. The null and alternative hypotheses are as follows:
+
+- $H_0$: the difference in the means of both samples is equal to zero (i.e. the samples have the same mean)
+- $H_1$: the difference in the means of both samples is not equal to zero  (the samples have different means)
+
+E.g. in the pay gap data, the variables `FemaleBonusPercent` and `MaleBonusPercent` record the average percentage bonus at each firm, for females and males respectively. You could construct a two-sample $t$-test on these variables, where the null hypothesis is that the samples have the same mean:
+
+$$
+\begin{aligned}
+  H_0: \big| \;\;  \texttt{mean(FemaleBonusPercent) - mean(MaleBonusPercent)} \;\; \big| = 0 \\ 
+  H_1: \big| \;\; \texttt{mean(FemaleBonusPercent) - mean(MaleBonusPercent)} \;\; \big| \neq 0
+\end{aligned}
+$$
+
+In R you can use the `t.test()` function, entering both samples as arguments: 
+
+```{r}
+t.test(paygap$FemaleBonusPercent, paygap$MaleBonusPercent)
+```
+
+The observed values of the test are at the bottom: the average bonus percent is 25.50 for females and 26.03 for males, making the absolute difference between the two 0.5. Though nonzero, this difference is small.  
+
+The $p$-value of this test is 0.889, i.e. there is an 88.9\% of seeing an observed difference of 0.5 under the null hypothesis. Since this $p$-value is substantially higher than 0.05, there is not sufficient evidence to reject the null. Moreover, the 95\% confidence interval *contains* the null hypothesis (that the difference is zero).  
+
+You should thus assume the null is true, and conclude that there is no evidence in this sample to suggest the average bonus percent is different for females and males. 
+
+
+
+\ 
+
+---
+
+# Relationships between Variables 
 
 Histograms and summary statistics help understand the distribution of data within a variable. Scatterplots can help visualize the relationships *between* variables. 
 
-From the heatwave data, below is a scatterplot of temperature on vegetation: 
+From the NYC heatwave data, below is a scatterplot of temperature on vegetation: 
 
 ```{r}
 ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
