@@ -233,7 +233,7 @@ The following examples will demonstrate how to use `ggplot()`. Here is a ggplot 
 
 ## Histograms
 
-Histograms are a good way to visualize the distribution of data, since they display the frequency (or relative frequency) of observations within specified intervals or 'bins'.  
+Histograms are good for visualizing the distribution of data, since they display the frequency (or relative frequency) of observations within specified intervals or 'bins'.  
 
 To plot a histogram you must specify `+ geom_histogram()` after the main function call. Histograms only require one variable (for the $x$-axis; the $y$-axis is simply frequency).  
 
@@ -267,7 +267,7 @@ ggplot(data = nycbnb, mapping = aes(x = priceUSD)) +
 
 ## Scatterplots
 
-Scatterplots are a good way to visualize the covariation or relationship between two variables. 
+Scatterplots are good for visualizing the relationship between two variables. 
 
 To make a scatterplot you must specify `+ geom_point()` after the main function call. Naturally, scatterplots require two variables--one for $x$ and one for $y$. 
 

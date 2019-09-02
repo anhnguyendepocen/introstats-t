@@ -59,7 +59,7 @@ nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE) %>%
 
 A sample of data is a set of observations or measurements of a variable. As you saw in the previous chapter, histograms are a good way to visualize the **distribution** of observations in a variable.  
 
-The following dataset has data on the gender pay gap at over 10,000 UK firms in 2018.^[The data is freely available at https://gender-pay-gap.service.gov.uk/. Excuse the horribly cumbersome variable names.]
+The following dataset has variables on the gender pay gap at over 10,000 UK firms in 2018.^[The data is freely available at https://gender-pay-gap.service.gov.uk/. Excuse the horribly cumbersome variable names.]
 
 Below is a preview of the dataset and some of the variables contained therein:
 
@@ -131,7 +131,7 @@ ggplot(aes(x = PropFemaleTopQuartile), data = paygap) +
   theme_bw()
 ```
 
-The mode is the most commonly occurring value. Although there is no function in R to formally calculate the mode, you can visualize it as the value corresponding to the peak in a histogram or density plot. 
+The mode is the most commonly occurring value in a distribution. Although there is no function in R to formally calculate the mode, you can visualize it as the value corresponding to the peak in a histogram or density plot. 
 
 
 
@@ -202,7 +202,7 @@ plot2 <- ggplot(aes(x = PropMaleTopQuartile), data = paygap) +
 grid.arrange(plot1, plot2, ncol = 2)
 ```
 
-Naturally^[Due to the cis-normativity of the study.] the distributions for females and males are mirror images of each other. 
+Naturally^[Due to the cis-normativity of the study.] these distributions are mirror images of each other. 
 
 The distribution for females has **right-skew** (or positive skew), since the tail drags rightwards (in the positive direction). The distribution for males has **left-skew** (negative skew), since the tail drags leftwards (in the negative direction).  
 
@@ -249,7 +249,7 @@ ggplot(aes(x = as.factor(Expt), y = Speed + 299000), data = morley) +
 
 Boxplots are a good way to visualize outliers in a distribution of data. In this example, experiments 1 and 3 have outliers.  
 
-If outliers are not due to measurement error, they may suggest the distribution is intrinsically **skewed** or **heavy-tailed**. An example is the distribution of females/males in the top-earning quartile. Provided the observations are not erroneous, the skew of these distributions may reflect the inherent asymmetry in the distribution of females/males across income.^[Assuming, of course, that the data is **unbiased**; this is a big assumption that ought to be tested before any such conclusions are drawn. See: bias. `insert link`]  
+If outliers are not due to measurement error, they may suggest the distribution is intrinsically **skewed** or **heavy-tailed**. 
 
 In general, outliers should not be discarded unless they are obviously due to measurement error.  
 
@@ -266,7 +266,7 @@ X <- c(round(runif(n = 9, min = 21, max = 22),1), 83.4)
 kable(t(X))
 ```
 
-The mean of this sample is $\bar X =$ `r toString(round(mean(X), 2))` and the median is $m =$ `r toString(round(median(X), 2))`. Clearly the median is a more representative measure of central tendency than the mean.  
+The mean of this sample is $\bar X =$ `r toString(round(mean(X), 2))` and the median is $m =$ `r toString(round(median(X), 2))`. In this case the median is clearly a more representative measure of central tendency than the mean.  
 
 Strong outliers drag the mean in the direction of skew (in this case positive). This is why under positive skew the mean is larger than the median, and vice versa.  
 
@@ -282,7 +282,7 @@ $$\text{MAD} = \text{median}(|X_i - m|)$$
 
 where $m$ is the median of the data.  
 
-The MAD is more resilient to outliers than the standard deviation is, since the former uses absolute deviations, while the latter usessquared deviations.  
+The MAD is more resilient to outliers than the standard deviation is, since the former uses absolute deviations, while the latter uses squared deviations.  
 
 In R, you can use `mad()`:^[From the `stats` package.] 
 

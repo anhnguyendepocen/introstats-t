@@ -221,7 +221,7 @@ mean(some_numbers)</code></pre>
 <p> </p>
 <div id="histograms" class="section level2">
 <h2>Histograms</h2>
-<p>Histograms are a good way to visualize the distribution of data, since they display the frequency (or relative frequency) of observations within specified intervals or ‘bins’.</p>
+<p>Histograms are good for visualizing the distribution of data, since they display the frequency (or relative frequency) of observations within specified intervals or ‘bins’.</p>
 <p>To plot a histogram you must specify <code>+ geom_histogram()</code> after the main function call. Histograms only require one variable (for the <span class="math inline">\(x\)</span>-axis; the <span class="math inline">\(y\)</span>-axis is simply frequency).</p>
 <p>Below is a histogram of Airbnb prices in NYC:</p>
 <p><label for="tufte-mn-7" class="margin-toggle">⊕</label><input type="checkbox" id="tufte-mn-7" class="margin-toggle"><span class="marginnote">Note the argument <span class="math inline">\(\texttt{bins=20}\)</span> in <span class="math inline">\(\texttt{geom_histogram()}\)</span>. This specifies your histogram will have 20 bins. Alternatively you could use the argument <span class="math inline">\(\texttt{binwidth=XXX}\)</span> to specify that each bin should have a certain width.</span></p>
@@ -243,7 +243,7 @@ mean(some_numbers)</code></pre>
 </div>
 <div id="scatterplots" class="section level2">
 <h2>Scatterplots</h2>
-<p>Scatterplots are a good way to visualize the covariation or relationship between two variables.</p>
+<p>Scatterplots are good for visualizing the relationship between two variables.</p>
 <p>To make a scatterplot you must specify <code>+ geom_point()</code> after the main function call. Naturally, scatterplots require two variables–one for <span class="math inline">\(x\)</span> and one for <span class="math inline">\(y\)</span>.</p>
 <p>Below is a scatterplot of latitude on longitude:</p>
 <pre class="r"><code>ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude)) + 
