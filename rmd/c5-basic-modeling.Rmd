@@ -361,17 +361,17 @@ Note how each category appears as a separate predictor, with its own coefficient
 
 This effectively creates a different regression equation for each category. E.g. when predicting temperatures in Fordham, the equation is: 
 
-$$\text{temp}_{fordham} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 2.27$$
+$$\text{temp}_{fordham} = 106.11 - 15.93\text{*veg} - 0.34\text{*albedo} - 2.27$$
 
 When predicting temperatures in Maspeth: 
 
-$$\text{temp}_{maspeth} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 1.69$$
+$$\text{temp}_{maspeth} = 106.11 - 15.93\text{*veg} - 0.34\text{*albedo} - 1.69$$
 
 Note also how one of the categories--Crown Heights Brooklyn--is missing. This is because R uses one of the categories as a baseline which the other coefficients are relative to. The baseline category is omitted from the output.   
 
 Thus when predicting temperatures in Crown Heights:
 
-$$\text{temp}_{crownheights} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo}$$
+$$\text{temp}_{crownheights} = 106.11 - 15.93\text{*veg} - 0.34\text{*albedo}$$
 
 
 

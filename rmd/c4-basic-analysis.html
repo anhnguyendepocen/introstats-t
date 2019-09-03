@@ -1016,31 +1016,31 @@ ocean parkway brooklyn
 <tbody>
 <tr>
 <td style="text-align:right;">
-22
-</td>
-<td style="text-align:right;">
-21.3
-</td>
-<td style="text-align:right;">
-21
+21.6
 </td>
 <td style="text-align:right;">
 21.9
 </td>
 <td style="text-align:right;">
-21.6
+21.2
 </td>
 <td style="text-align:right;">
-21.2
+21.6
 </td>
 <td style="text-align:right;">
 21
 </td>
 <td style="text-align:right;">
-21.4
+21.5
 </td>
 <td style="text-align:right;">
-21.3
+21.8
+</td>
+<td style="text-align:right;">
+21.1
+</td>
+<td style="text-align:right;">
+21.1
 </td>
 <td style="text-align:right;">
 83.4
@@ -1048,7 +1048,7 @@ ocean parkway brooklyn
 </tr>
 </tbody>
 </table>
-<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.61 and the median is <span class="math inline">\(m =\)</span> 21.35. In this case the median is clearly a more representative measure of central tendency than the mean.</p>
+<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.62 and the median is <span class="math inline">\(m =\)</span> 21.55. In this case the median is clearly a more representative measure of central tendency than the mean.</p>
 <p>Strong outliers drag the mean in the direction of skew (in this case positive). This is why under positive skew the mean is larger than the median, and vice versa.</p>
 <p>Estimators are said to be <strong>robust</strong> if they can cope with outliers. The median is a robust measure of central tendency; the mean is not. However the mean is generally a more precise statistic.</p>
 <p> </p>
@@ -1194,12 +1194,12 @@ ocean parkway brooklyn
 <div id="relationships-between-variables" class="section level1">
 <h1>Relationships between Variables</h1>
 <p>The tools demonstrated thus far help understand the distribution of data within a <em>single</em> variable.</p>
-<p>Many studies are motivated by the relationships between two or more variables. This section will demonstrate a few tools for visualizing and quantifying dependencies between variables.</p>
+<p>Many studies are motivated by the relationships between two or more variables. This section will demonstrate a few tools for visualizing and quantifying relationships between variables.</p>
 <p> </p>
 <div id="association-and-dependence" class="section level2">
 <h2>Association and dependence</h2>
 <p>Two variables are said to be <strong>associated</strong> or <strong>dependent</strong> if there is a relationship between them.</p>
-<p>Scatterplots are a good way to visualize the relationship between two numeric variables.</p>
+<p>Scatterplots are a good way to visualize the association between two numeric variables.</p>
 <p>From the NYC heatwave data, below is a scatterplot of temperature on vegetation:</p>
 <pre class="r"><code>ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   geom_point(size=1) +

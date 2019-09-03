@@ -503,7 +503,7 @@ You should thus assume the null is true, and conclude that there is no evidence 
 
 The tools demonstrated thus far help understand the distribution of data within a *single* variable. 
 
-Many studies are motivated by the relationships between two or more variables. This section will demonstrate a few tools for visualizing and quantifying dependencies between variables. 
+Many studies are motivated by the relationships between two or more variables. This section will demonstrate a few tools for visualizing and quantifying relationships between variables. 
 
 \ 
 
@@ -511,7 +511,7 @@ Many studies are motivated by the relationships between two or more variables. T
 
 Two variables are said to be **associated** or **dependent** if there is a relationship between them. 
 
-Scatterplots are a good way to visualize the relationship between two numeric variables. 
+Scatterplots are a good way to visualize the association between two numeric variables. 
 
 From the NYC heatwave data, below is a scatterplot of temperature on vegetation: 
 

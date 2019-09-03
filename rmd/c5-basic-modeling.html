@@ -459,12 +459,12 @@ summary(reg3)</code></pre>
 ## F-statistic: 205.1 on 7 and 1013 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Note how each category appears as a separate predictor, with its own coefficient. Each category should be interpreted a dummy variable<label for="tufte-sn-9" class="margin-toggle sidenote-number">9</label><input type="checkbox" id="tufte-sn-9" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">9</span> A dummy variable can only take two values, 0 and 1. E.g. <span class="math display">\[\texttt{areafordham bronx} = \cases{1 \;\;\; \text{if area} = \text{fordham} \\ 0 \;\;\; \text{if area} \neq \text{fordham}}\]</span></span>.</p>
 <p>This effectively creates a different regression equation for each category. E.g. when predicting temperatures in Fordham, the equation is:</p>
-<p><span class="math display">\[\text{temp}_{fordham} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 2.27\]</span></p>
+<p><span class="math display">\[\text{temp}_{fordham} = 106.11 - 15.93\text{*veg} - 0.34\text{*albedo} - 2.27\]</span></p>
 <p>When predicting temperatures in Maspeth:</p>
-<p><span class="math display">\[\text{temp}_{maspeth} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 1.69\]</span></p>
+<p><span class="math display">\[\text{temp}_{maspeth} = 106.11 - 15.93\text{*veg} - 0.34\text{*albedo} - 1.69\]</span></p>
 <p>Note also how one of the categories–Crown Heights Brooklyn–is missing. This is because R uses one of the categories as a baseline which the other coefficients are relative to. The baseline category is omitted from the output.</p>
 <p>Thus when predicting temperatures in Crown Heights:</p>
-<p><span class="math display">\[\text{temp}_{crownheights} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo}\]</span></p>
+<p><span class="math display">\[\text{temp}_{crownheights} = 106.11 - 15.93\text{*veg} - 0.34\text{*albedo}\]</span></p>
 <p> </p>
 <hr />
 <p> </p>
