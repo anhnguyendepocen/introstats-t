@@ -101,7 +101,7 @@ The first argument in the `select()` function is the data frame you are selectin
 
 Use `rename()`:
 
-`r margin_note("Note since these operations are assigned to an existing object, 'nycbnb', you should find they overwrite the contents of the original data frame. If you want to preserve the original data you should assign your changes to a new data object.")`
+`r margin_note("Note since this operation is assigned to an existing object, 'nycbnb', you should find it overwrites the contents of the original data frame. If you want to preserve the original data you should assign your changes to a new data object.")`
 
 ```{r}
 # rename 'price' to 'priceUSD'
@@ -180,7 +180,7 @@ There are many ways to aggregate data. One way is using `group_by()` to specify 
 
 E.g. to compare average prices across borough, use borough as the grouping variable and calculate a mean for price: 
 
-`r margin_note("Note, many functions in R accept both US and UK spellings (where there is a difference)--e.g. both $\\texttt{summarise()}$ and $\\texttt{summarize()}$ will work.")`
+`r margin_note("Note many functions in R accept both US and UK spellings (where there is a difference)--e.g. both $\\texttt{summarize()}$ and $\\texttt{summarise()}$ will work.")`
 
 ```{r, warning=FALSE}
 prices_by_borough <- nycbnb %>%
@@ -283,7 +283,7 @@ ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude)) +
 
 To distinguish between boroughs, you can add another argument to the aesthetic mapping, `color = borough`. This will use different colors for data points corresponding to each borough:
 
-`r margin_note("For obvious reasons, the color mapping requires a categorical variable. A different color (or colour) will be used for each category.")`
+`r margin_note("For obvious reasons, the color mapping requires a categorical variable. A different color will be used for each category.")`
 
 ```{r}
 ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough)) + 
@@ -295,7 +295,7 @@ ggplot(data = nycbnb, mapping = aes(x = longitude, y = latitude, color = borough
 
 ## Box & Whisker Plots 
 
-Box and whisker plots are good for visualizing the distributions of a variable across different categories. 
+Box and whisker plots are good for visualizing the distribution of a variable across different categories. 
 
 To make a box and whisker plot you must specify `+ geom_boxplot()` after the main function call. Box and whisker plots require two variables--one should be categorical and the other should be numeric.  
 
@@ -313,7 +313,7 @@ ggplot(data = nycbnb, mapping = aes(x = borough, y = priceUSD)) +
 
 ## Tables
 
-One way (among many) to create elegant tables in your R Markdown output document is using `kable()` from the `knitr` package.^[Note `kable()` is optimized for pdf output files--you may have issues if your output format is html.] Below are some examples:
+One way (among many) to create elegant tables in your R Markdown output document is using `kable()` ^[From the `knitr` package. Note `kable()` is optimized for pdf output files--you may have issues if your output format is html.]. Below are some examples:
 
 \ 
 

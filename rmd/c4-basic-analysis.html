@@ -916,7 +916,7 @@ ocean parkway brooklyn
 </div>
 <div id="summarizing-data" class="section level1">
 <h1>Summarizing Data</h1>
-<p>A sample of data is simply a collection of observations–a <strong>distribution</strong>. As demonstrated in the previous chapter, histograms are a good way to visualize the <strong>distribution</strong> of data within a variable.</p>
+<p>When you have a sample of data, it is useful to understand its <strong>distribution</strong>. As demonstrated in the previous chapter, histograms are a good way to visualize the distribution of data within a variable.</p>
 <p>From the pay gap data, below is a histogram of the variable <code>PropFemaleTopQuartile</code> – the proportion of females in the top-earning quartile.</p>
 <pre class="r"><code>ggplot(aes(x = PropFemaleTopQuartile), data = paygap) + 
   geom_histogram(bins = 50, aes(y = ..density..)) +
@@ -1016,16 +1016,22 @@ ocean parkway brooklyn
 <tbody>
 <tr>
 <td style="text-align:right;">
-21.7
+22
+</td>
+<td style="text-align:right;">
+21.3
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+21.9
+</td>
+<td style="text-align:right;">
+21.6
 </td>
 <td style="text-align:right;">
 21.2
-</td>
-<td style="text-align:right;">
-21.5
-</td>
-<td style="text-align:right;">
-21.7
 </td>
 <td style="text-align:right;">
 21
@@ -1037,18 +1043,12 @@ ocean parkway brooklyn
 21.3
 </td>
 <td style="text-align:right;">
-21.7
-</td>
-<td style="text-align:right;">
-21.5
-</td>
-<td style="text-align:right;">
 83.4
 </td>
 </tr>
 </tbody>
 </table>
-<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.64 and the median is <span class="math inline">\(m =\)</span> 21.5. In this case the median is clearly a more representative measure of central tendency than the mean.</p>
+<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.61 and the median is <span class="math inline">\(m =\)</span> 21.35. In this case the median is clearly a more representative measure of central tendency than the mean.</p>
 <p>Strong outliers drag the mean in the direction of skew (in this case positive). This is why under positive skew the mean is larger than the median, and vice versa.</p>
 <p>Estimators are said to be <strong>robust</strong> if they can cope with outliers. The median is a robust measure of central tendency; the mean is not. However the mean is generally a more precise statistic.</p>
 <p> </p>
@@ -1067,7 +1067,8 @@ ocean parkway brooklyn
 <div id="point-vs-interval-estimators" class="section level1">
 <h1>Point vs Interval Estimators</h1>
 <p>A summary statistic derived from samples of data–such as the sample mean and sample standard deviation–is known as an <strong>estimator</strong>, since it uses a sample to estimate the true value of a population parameter.<label for="tufte-sn-8" class="margin-toggle sidenote-number">8</label><input type="checkbox" id="tufte-sn-8" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">8</span> E.g. the <em>true</em> mean difference in hourly wages between females and males is unknown; but the sample of pay gap data can be used to estimate it.</span></p>
-<p>The summary statistics introduced above are known as <strong>point estimators</strong> since they use a single value to estimate a population parameter. There also exist <strong>interval estimators</strong>, which use a <em>range</em> of values to estimate a population parameter. Often these are more useful than single-valued estimates, as they provide reasonable margins of error when drawing inferences from data.</p>
+<p>The summary statistics introduced above are known as <strong>point estimators</strong> since they use a single value to estimate a population parameter.</p>
+<p>There also exist <strong>interval estimators</strong>, which use a <em>range</em> of values to estimate a population parameter. Often these are more useful than single-valued estimates, as they provide reasonable margins of error when drawing inferences from data.</p>
 <p>A <strong>confidence interval</strong> is one example of an interval estimator.</p>
 <p> </p>
 <div id="a-confidence-interval-for-the-mean" class="section level2">
@@ -1099,7 +1100,7 @@ ocean parkway brooklyn
 ##  upper bound = 14.467</code></pre>
 <p>The output suggests that the true mean difference in wages is approximately 95% likely to lie somewhere between 13.93% and 14.47%.</p>
 <p>Note there is one important caveat to this claim. A confidence interval computed from sample data (such as the one above) will always be centered on the sample mean, not the true mean. This means the <em>actual</em> probability of the interval containing the true mean depends on how close the sample mean is to the true mean. Since the true mean of a distribution is often unknown, there is no way to tell from any one sample of data whether the interval contains the true mean, or the likelihood thereof. Thus the confidence level associated with an interval is only ever approximate–if at all.</p>
-<p>Nonetheless confidence intervals are still useful as they demonstrate the degree of uncertainty in a result, whether the result is accurate or not. There is more theory on confidence intervals in Part II.</p>
+<p>Nonetheless confidence intervals are still useful as they demonstrate the degree of uncertainty in an estimate, whether the estimate is accurate or not. There is more theory on confidence intervals in Part II.</p>
 <p> </p>
 <hr />
 </div>

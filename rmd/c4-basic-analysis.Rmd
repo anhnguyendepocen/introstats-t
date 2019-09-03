@@ -101,7 +101,7 @@ kable(nycheat[c(1:3, 196:198, 407:409, 524:526, 807:809, 898:900), ])
 
 # Summarizing Data  
 
-A sample of data is simply a collection of observations--a **distribution**. As demonstrated in the previous chapter, histograms are a good way to visualize the **distribution** of data within a variable.  
+When you have a sample of data, it is useful to understand its **distribution**. As demonstrated in the previous chapter, histograms are a good way to visualize the distribution of data within a variable.  
 
 From the pay gap data, below is a histogram of the variable `PropFemaleTopQuartile` -- the proportion of females in the top-earning quartile. 
 
@@ -343,6 +343,7 @@ mad(paygap$PropFemaleTopQuartile)
 A summary statistic derived from samples of data--such as the sample mean and sample standard deviation--is known as an **estimator**, since it uses a sample to estimate the true value of a population parameter.^[E.g. the *true* mean difference in hourly wages between females and males is unknown; but the sample of pay gap data can be used to estimate it.] 
 
 The summary statistics introduced above are known as **point estimators** since they use a single value to estimate a population parameter. 
+
 There also exist **interval estimators**, which use a *range* of values to estimate a population parameter. Often these are more useful than single-valued estimates, as they provide reasonable margins of error when drawing inferences from data.
 
 A **confidence interval** is one example of an interval estimator.  
@@ -388,7 +389,7 @@ The output suggests that the true mean difference in wages is approximately 95\%
 
 Note there is one important caveat to this claim. A confidence interval computed from sample data (such as the one above) will always be centered on the sample mean, not the true mean. This means the *actual* probability of the interval containing the true mean depends on how close the sample mean is to the true mean. Since the true mean of a distribution is often unknown, there is no way to tell from any one sample of data whether the interval contains the true mean, or the likelihood thereof. Thus the confidence level associated with an interval is only ever approximate--if at all.  
 
-Nonetheless confidence intervals are still useful as they demonstrate the degree of uncertainty in a result, whether the result is accurate or not. There is more theory on confidence intervals in Part II. 
+Nonetheless confidence intervals are still useful as they demonstrate the degree of uncertainty in an estimate, whether the estimate is accurate or not. There is more theory on confidence intervals in Part II. 
 
 
 
