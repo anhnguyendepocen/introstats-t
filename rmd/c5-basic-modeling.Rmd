@@ -57,12 +57,16 @@ When two (or more) variables are related, you can build a statistical model that
 - **prediction**--predicting an outcome variable based on a set of predictor variables
 - **causal inference**--determining the causal relationships between variables  
 
-Using models to learn from data is an important part of statistics, machine learning, and artificial intelligence. Some examples of learning problems:
+Using models to learn from data is an important part of statistical inference. Some examples of learning problems:
 
 - predicting the price of a stock 6 months from now, using economic data and measures of company performance
-- predicting which candidate will win an election, based on poll data and demographic indicators
+    + https://towardsdatascience.com/machine-learning-techniques-applied-to-stock-price-prediction-6c1994da8001
+- predicting which candidate will win an election, based on poll data 
+    + https://fivethirtyeight.com/features/the-real-story-of-2016/
 - identifying the variables causing global temperature and sea level changes
     + https://climate.nasa.gov/evidence/
+- identifying and classifying hate speech in a series of social media posts
+    + https://towardsdatascience.com/classifying-hate-speech-an-overview-d307356b9eba
 - identifying patterns in images to train machine-learning algorithms
     + https://qz.com/495614/computers-can-now-paint-like-van-gogh-and-picasso/
 
@@ -76,12 +80,12 @@ There are many approaches to building models to learn from data. Linear regressi
 
 # Simple Linear Regression 
 
-Linear regression is a technique for modeling *linear* relationships between variables^[Recall the observed linear relationship between temperature and vegetation from the NYC heatwave data:].  
+Linear regression is a technique for modeling *linear* relationships between variables^[Recall the observed linear association between temperature and vegetation from the NYC heatwave data:].  
 
 ```{r, echo=FALSE, fig.margin = TRUE}
-ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   geom_point(size=0.5) +
-  xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
+  xlab('vegetation (NDVI)') + ylab('temperature (farenheit)') +
   theme_bw()
 ```
 
@@ -92,10 +96,10 @@ In linear regression, the relationship between the predictor and response is mod
 The plot below shows the relationship between temperature (response) and vegetation (predictor) from the NYC heatwave data, with a regression line overlaid^[You can overlay a regression line on a scatterplot by specifying  `+ stat_smooth(method='lm')`. The grey region around the line is its **standard error**. You can remove this by specifying `se = FALSE` as an additional argument.]:
 
 ```{r}
-ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   geom_point(size=0.5) +
   stat_smooth(method='lm') +           # overlay regression line
-  xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
+  xlab('vegetation(NDVI)') + ylab('temperature (farenheit)') +
   theme_bw()
 ```
 
@@ -104,7 +108,7 @@ ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
 ## Functional form 
 
 ```{r, echo=FALSE, fig.margin = TRUE, fig.cap = c("A simple linear function, of form $y=mx+c$.", "A linear function used to model the observed relationship between two variables (with error bars shown).")}
-ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   geom_point(size=0.5, color = 'white') +
   stat_smooth(method='lm', se = FALSE) +
   xlab('x') + ylab('y') +
@@ -112,15 +116,15 @@ ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
   theme(axis.text.x = element_blank(), 
         axis.text.y = element_blank())
 
-reg1 <- lm(formula = temperature ~ ndvi, data = nycheat)
+reg1 <- lm(formula = temperature ~ vegetation, data = nycheat)
 
 nycheat <- nycheat %>%
   mutate(temperature_prediction = predict(reg1))
 
-ggplot(data = nycheat, mapping = aes(x = ndvi, y = temperature)) +
+ggplot(data = nycheat, mapping = aes(x = vegetation, y = temperature)) +
   geom_point(size = 0.7, alpha = 0.5) +
   stat_smooth(method='lm', se = FALSE) +
-  geom_segment(aes(x = ndvi, xend = ndvi, y = temperature, yend = temperature_prediction), 
+  geom_segment(aes(x = vegetation, xend = vegetation, y = temperature, yend = temperature_prediction), 
                alpha = 0.3, color = 'black') +
   xlab("vegetation") + ylab("temperature") + 
   theme_light()
@@ -184,7 +188,7 @@ In R, you can use `lm()` to perform linear regression and compute the coefficien
 E.g. the following code regresses temperature on vegetation from the NYC heatwave data: 
 
 ```{r}
-reg1 <- lm(formula = temperature ~ ndvi, data = nycheat)
+reg1 <- lm(formula = temperature ~ vegetation, data = nycheat)
 ```
 
 You can view the results by calling `summary()` on the saved regression data:  
@@ -201,7 +205,7 @@ Substituting these values into the regression formula gives the following equati
 
 $$\Longrightarrow \hspace{0.5cm} y_i = 92.40 -19.46 \; x_i + \varepsilon_i$$
 
-This equation suggests that when vegetation index increases by 1, temperature decreases by 19.46$^o F$. 
+This equation suggests that as the vegetation index increases by 1, temperature decreases by 19.46$^o F$.^[Although variation of this magnitude is not actually observed in the data.]
 
 \ 
 
@@ -239,7 +243,7 @@ nycheat <- nycheat %>%
 If you were to plot the predicted response ($\mhat y$) on the predictor ($x$), you would find the data points lie on the regression line:
 
 ```{r}
-ggplot(data = nycheat, mapping = aes(x = ndvi, y = temperature_prediction)) +
+ggplot(data = nycheat, mapping = aes(x = vegetation, y = temperature_prediction)) +
   geom_point(size=0.5) +
   theme_minimal()
 ```
@@ -251,18 +255,21 @@ ggplot(data = nycheat, mapping = aes(x = ndvi, y = temperature_prediction)) +
 Extrapolation refers to using models for prediction *outside* the range of data used to build the model. 
 
 ```{r, echo = FALSE, fig.margin = TRUE}
-ggplot(aes(x = ndvi, y = temperature), data = nycheat) +
+ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   geom_point(size=0.5) +
-  stat_smooth(method='lm') +           # overlay regression line
+  stat_smooth(method='lm', se = FALSE) +           # overlay regression line
   xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
   theme_bw()
 ```
 
-E.g. in the heatwave data, values of vegetation index range from -0.6 to 0.25 ^[For reference ^]. If you tried to use the model specified above to predict temperature when vegetation index is 0.5, you would be extrapolating since there is no data to support your prediction for values in that range.    
+E.g. in the heatwave data, values of vegetation index range from -0.05 to 0.8 ^[For reference ^]. If you tried to use the model specified above to predict temperature when vegetation index is 1, or -0.5, you would be extrapolating since there is no data to support your prediction for values in that range.    
 
 In general, extrapolation is risky because the linearity of a relationship is not guaranteed outside the range of observed data. In the heatwave data you can't intuit how the relationship between temperature and vegetation evolves for higher or lower values of vegetation index. Theoretically it could look like this: 
 
-`insert plot with nonlinear extension`
+```{r, echo=FALSE}
+knitr::include_graphics('./pics/m1c5_pic1.png')
+```
+
 
 If indeed the relationship is nonlinear outside the range of observed data, the linear model will yield invalid predictions of the response variable.  
 
@@ -288,7 +295,7 @@ kable(cor(nycheat[2:6]))
 Clearly temperature is correlated not only with vegetation, but also with albedo, building height, and (to a lesser extent) population density. In the following multiple regression model, all four variables are used as predictors of temperature:
 
 ```{r}
-reg2 <- lm(formula = temperature ~ ndvi + albedo + building_height + pop_density, data = nycheat)
+reg2 <- lm(formula = temperature ~ vegetation + albedo + building_height + pop_density, data = nycheat)
 summary(reg2)
 ```
 
@@ -335,7 +342,7 @@ $$
 
 # Categorical Predictors in Linear Models
 
-The examples thus far have demonstrated models with continuous predictor variables. You can in fact also include categorical variables as predictors in linear models. 
+The examples thus far have demonstrated models with continuous predictor variables. You can also include categorical variables as predictors in linear models. 
 
 E.g. in the heatwave data, the variable `area` is categorical with 6 levels/categories:
 
@@ -346,13 +353,26 @@ unique(nycheat$area)
 Now consider the following multiple regression model, which regresses temperature on vegetation (continuous), albedo (continuous), and area (categorical):
 
 ```{r}
-reg3 <- lm(formula = temperature ~ ndvi + albedo + area, data = nycheat)
+reg3 <- lm(formula = temperature ~ vegetation + albedo + area, data = nycheat)
 summary(reg3)
 ```
 
-Note how each category appears as a separate predictor, with its own coefficient. Each category should be interpreted a dummy variable^[A dummy variable can only take two values, 0 and 1. E.g. $$\texttt{areafordham bronx} = \cases{1 \;\;\; \text{if area} = \text{fordham} \\ 0 \;\;\; \text{if area} \neq \text{fordham}}$$ Thus when predicting temperatures in Fordham, the equation is: $$\text{temp}_{fordham} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 2.27$$ When predicting temperatures in Maspeth: $$\text{temp}_{maspeth} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 1.69$$].
+Note how each category appears as a separate predictor, with its own coefficient. Each category should be interpreted a dummy variable^[A dummy variable can only take two values, 0 and 1. E.g. $$\texttt{areafordham bronx} = \cases{1 \;\;\; \text{if area} = \text{fordham} \\ 0 \;\;\; \text{if area} \neq \text{fordham}}$$].  
+
+This effectively creates a different regression equation for each category. E.g. when predicting temperatures in Fordham, the equation is: 
+
+$$\text{temp}_{fordham} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 2.27$$
+
+When predicting temperatures in Maspeth: 
+
+$$\text{temp}_{maspeth} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo} - 1.69$$
 
 Note also how one of the categories--Crown Heights Brooklyn--is missing. This is because R uses one of the categories as a baseline which the other coefficients are relative to. The baseline category is omitted from the output.   
+
+Thus when predicting temperatures in Crown Heights:
+
+$$\text{temp}_{crownheights} = 98.15 - 15.93\text{*veg} - 0.34\text{*albedo}$$
+
 
 
 

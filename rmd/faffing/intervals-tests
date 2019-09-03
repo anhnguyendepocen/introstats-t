@@ -1,3 +1,28 @@
+Every experiment or study is concerned with answering some question. Some (possibly relevant) examples--
+
+- what is the true extent of the gender pay gap?
+- why is New York City insufferably hot in summer?
+
+Conducting a study involves choosing relevant variables to answer the question, collecting empirical data on these variables, and using some method of analysis to draw inferences from the data. 
+
+Every study has a **population**--this is the relevant set of events or observations required to fully answer the question. E.g. if trying to determine the true gender pay gap, the population might be the salary of every single person.  
+
+Before conducting a study, there is often a **hypothesis** or preexisting notion about what the population looks like. The data collected during the study is often used to validate or reject the hypothesis.  
+
+A **sample** is a subset of the events/observations in a population. Most studies are conducted with samples, since it is often impossible to acquire data on a whole population. 
+
+Below are two examples of sample data collected in order to investigate certain research questions. 
+
+
+
+
+
+
+
+
+
+
+
 ## Confidence intervals
 
 A confidence interval for a parameter is a range of values that might contain the true parameter. The range of values is associated with a **confidence level**, which describes the approximate probability the true parameter lies in the range specified.^[The theory behind this is explained in part 2.] E.g. a 95\% confidence interval for the mean is a range of values where:

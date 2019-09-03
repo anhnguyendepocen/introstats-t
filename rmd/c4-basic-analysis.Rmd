@@ -58,7 +58,7 @@ nycbnb <- read.csv('./data/nyc-airbnb.csv', header = TRUE) %>%
 
 # Working with Sample Data 
 
-Every experiment or study is concerned with answering some question. Some (possibly relevant) examples--
+Every experiment or study is concerned with answering some question:
 
 - what is the true extent of the gender pay gap?
 - why is New York City insufferably hot in summer?
@@ -69,7 +69,7 @@ Every study has a **population**--this is the relevant set of events or observat
 
 A **sample** is a subset of the events/observations in a population. Most studies are conducted with samples, since it is often impossible to acquire data on a whole population. 
 
-Below are two examples of sample data related to the questions raised above. 
+Below are two examples of sample data relevant to the questions raised above. 
 
 \ 
 
@@ -85,7 +85,7 @@ kable(paygap[c(323,343,521,1387,1389,1495,3313,3889,4884,6214,7294,7299,10029), 
 
 \ 
 
-## Concerning the summer climate of New York
+## Concerning heatwaves in New York
 
 The following dataset has variables characterising the temperature and urban features of over 1000 locations in the city during a heatwave.^[Download the data <a href="base64 data" download="./data/nyc-heatwave.csv">here</a>. This data was simulated from the findings of this <a href="base64 data" download="./downloads/nyc-heat-island-mitigation.pdf">study</a>, investigating the extreme heating effect in NYC. Additional sources: <a href="https://www.ncdc.noaa.gov/cdo-web/search">NOAA</a>, <a href="https://landsat.visibleearth.nasa.gov/view.php?id=6800">Landsat</a>, <a href="https://data.cityofnewyork.us/Environment/Landcover-Raster-Data-2010-3ft-Resolution/9auy-76zt">NYC OpenData</a>.] Each recorded location was in one of six geographical areas. Below is a preview of the dataset:
 
@@ -500,7 +500,17 @@ You should thus assume the null is true, and conclude that there is no evidence 
 
 # Relationships between Variables 
 
-Histograms and summary statistics help understand the distribution of data within a variable. Scatterplots can help visualize the relationships *between* variables. 
+The tools demonstrated thus far help understand the distribution of data within a *single* variable. 
+
+Many studies are motivated by the relationships between two or more variables. This section will demonstrate a few tools for visualizing and quantifying dependencies between variables. 
+
+\ 
+
+## Association and dependence
+
+Two variables are said to be **associated** or **dependent** if there is a relationship between them. 
+
+Scatterplots are a good way to visualize the relationship between two numeric variables. 
 
 From the NYC heatwave data, below is a scatterplot of temperature on vegetation: 
 
@@ -511,21 +521,17 @@ ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   theme_bw()
 ```
 
-There appears to be a negative relationship between temperature and vegetation, i.e. lower temperatures seem to be recorded in areas with a higher concentration of vegetation, and vice versa.  
+There appears to be a negative association between temperature and vegetation, i.e. lower temperatures seem to be recorded in areas with a higher concentration of vegetation, and vice versa.  
+
+
 
 \ 
 
-## Correlation and dependency
+## Correlation  
 
+Correlation describes the *strength* of the association between two variables. Note that while association usually means any statistical relationship between two variables, correlation generally refers to linear associations only. 
 
-
-   
-
-\ 
-
-## Strong vs weak correlation 
-
-The stronger the correlation, the stronger the (apparent) relationship between the two variables. Strong correlation is depicted by tight clustering of data points, close to the diagonal line $y = x$ (or $y=-x$ for negative correlation). Weak correlation is depicted by loose clustering of data points, scattered away from the diagonal line.  
+The stronger the linear association between two variables, the greater their correlation. Strong correlation is depicted by tight clustering of data points, close to the diagonal line $y = x$ (or $y=-x$ for negative correlation). Weak correlation is depicted by loose clustering of data points, scattered away from the diagonal line.  
 
 ```{r fig-fullwidth, fig.width = 10, fig.height = 2, echo=FALSE}
 knitr::include_graphics('./pics/m1c4_pic1.png')
@@ -536,13 +542,13 @@ knitr::include_graphics('./pics/m1c4_pic1.png')
 
 ## The Pearson correlation coefficient, $r$
 
-The most common measure of correlation is the Pearson correlation coefficient, $r$, which takes a value between -1 and 1. A coefficient of $r=1$ or $r=-1$ implies perfect correlation, i.e. every data point is on the diagonal line. $r=0$ implies no correlation.  
+There are many different measures of correlation. The most common for linear relationships is the Pearson correlation coefficient, denoted $r$, which takes a value between -1 and 1. A coefficient of $r=1$ or $r=-1$ implies perfect correlation, i.e. every data point is on the diagonal line. $r=0$ implies no correlation.  
 
 ```{r, echo=FALSE}
-knitr::include_graphics('./pics/m1c4_pic3.png')
+knitr::include_graphics('./pics/m1c4_pic2.png')
 ```
 
-The Pearson correlation coefficient is only responsive to linear relationships. In the above figure, the bottom row shows variables which are clearly related to each other (indicated by the pattern) but since the relationship is nonlinear, the Pearson correlation coefficient is zero.  
+Note, the Pearson correlation coefficient is only responsive to linear relationships. In the above figure, the bottom row depicts variables that are clearly associated (indicated by the pattern) but since the association is nonlinear, the Pearson correlation coefficient is zero.  
 
 In R you can use `cor()` to compute the Pearson correlation coefficient between two variables. E.g. the Pearson correlation coefficient between temperature and vegetation is:
 
@@ -550,14 +556,14 @@ In R you can use `cor()` to compute the Pearson correlation coefficient between 
 cor(nycheat$temperature, nycheat$vegetation)
 ```
 
-```{r, fig.margin=TRUE, fig.cap="The relationship between temperature and vegetation. $r=-0.57$"}
+```{r, echo=FALSE, fig.margin=TRUE, fig.cap="For reference: the relationship between temperature and vegetation. $r=-0.57$"}
 ggplot(aes(x = vegetation, y = temperature), data = nycheat) +
   geom_point(size=1) +
-  xlab('NDVI (vegetation index)') + ylab('temperature (farenheit)') +
+  xlab('vegetation (NDVI)') + ylab('temperature (farenheit)') +
   theme_bw()
 ```
 
-A correlation coefficient of $r=-0.57$ suggests a moderate negative relationship between the two variables, as the scatterplot suggests.     
+A correlation coefficient of $r=-0.57$ implies a moderate negative relationship between the two variables, as the scatterplot suggests.     
 
 \ 
 
