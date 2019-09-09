@@ -251,7 +251,7 @@ Formally, the **skewness** of a sample of data is defined as:
 
 $$g_1 = \frac{\frac 1n \sum_i^n (X_i - \bar X)^3}{s^3}$$
 
-In R you can use the `skewness()` function:^[From the `moments` package.]
+In R you can use `skewness()`:^[From the `moments` package.]
 
 ```{r}
 skewness(paygap$PropFemaleTopQuartile)
@@ -399,7 +399,7 @@ Nonetheless confidence intervals are still useful as they demonstrate the degree
 
 # Simple Hypothesis Tests 
 
-A **hypothesis** is essentially a preconceived notion or model for what the population looks like. A hypothesis can be based on anything--the results of a previous experiment or even just a hunch. 
+A **hypothesis** is essentially a preconceived notion or model of what the population looks like. A hypothesis can be based on anything--the results of a previous experiment or even just a hunch. 
 
 Hypothesis testing involves comparing this hypothesis to a (new) sample of data from the population, to determine whether the hypothesis should be accepted or rejected.  
 

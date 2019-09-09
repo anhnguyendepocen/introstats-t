@@ -988,7 +988,7 @@ ocean parkway brooklyn
 </ul>
 <p>Formally, the <strong>skewness</strong> of a sample of data is defined as:</p>
 <p><span class="math display">\[g_1 = \frac{\frac 1n \sum_i^n (X_i - \bar X)^3}{s^3}\]</span></p>
-<p>In R you can use the <code>skewness()</code> function:<label for="tufte-sn-6" class="margin-toggle sidenote-number">6</label><input type="checkbox" id="tufte-sn-6" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">6</span> From the <code>moments</code> package.</span></p>
+<p>In R you can use <code>skewness()</code>:<label for="tufte-sn-6" class="margin-toggle sidenote-number">6</label><input type="checkbox" id="tufte-sn-6" class="margin-toggle"><span class="sidenote"><span class="sidenote-number">6</span> From the <code>moments</code> package.</span></p>
 <pre class="r"><code>skewness(paygap$PropFemaleTopQuartile)</code></pre>
 <pre><code>## [1] 0.3000614</code></pre>
 <p>The positive value indicates the distribution for females is positively skewed. Predictably, the skewness of the distribution for males is:</p>
@@ -1016,31 +1016,31 @@ ocean parkway brooklyn
 <tbody>
 <tr>
 <td style="text-align:right;">
-21.6
+21.4
 </td>
 <td style="text-align:right;">
-21.9
-</td>
-<td style="text-align:right;">
-21.2
-</td>
-<td style="text-align:right;">
-21.6
-</td>
-<td style="text-align:right;">
-21
-</td>
-<td style="text-align:right;">
-21.5
+21.3
 </td>
 <td style="text-align:right;">
 21.8
 </td>
 <td style="text-align:right;">
-21.1
+21.6
+</td>
+<td style="text-align:right;">
+21.7
+</td>
+<td style="text-align:right;">
+21.4
 </td>
 <td style="text-align:right;">
 21.1
+</td>
+<td style="text-align:right;">
+21.7
+</td>
+<td style="text-align:right;">
+21.9
 </td>
 <td style="text-align:right;">
 83.4
@@ -1048,7 +1048,7 @@ ocean parkway brooklyn
 </tr>
 </tbody>
 </table>
-<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.62 and the median is <span class="math inline">\(m =\)</span> 21.55. In this case the median is clearly a more representative measure of central tendency than the mean.</p>
+<p>The mean of this sample is <span class="math inline">\(\bar X =\)</span> 27.73 and the median is <span class="math inline">\(m =\)</span> 21.65. In this case the median is clearly a more representative measure of central tendency than the mean.</p>
 <p>Strong outliers drag the mean in the direction of skew (in this case positive). This is why under positive skew the mean is larger than the median, and vice versa.</p>
 <p>Estimators are said to be <strong>robust</strong> if they can cope with outliers. The median is a robust measure of central tendency; the mean is not. However the mean is generally a more precise statistic.</p>
 <p> </p>
@@ -1107,7 +1107,7 @@ ocean parkway brooklyn
 </div>
 <div id="simple-hypothesis-tests" class="section level1">
 <h1>Simple Hypothesis Tests</h1>
-<p>A <strong>hypothesis</strong> is essentially a preconceived notion or model for what the population looks like. A hypothesis can be based on anything–the results of a previous experiment or even just a hunch.</p>
+<p>A <strong>hypothesis</strong> is essentially a preconceived notion or model of what the population looks like. A hypothesis can be based on anything–the results of a previous experiment or even just a hunch.</p>
 <p>Hypothesis testing involves comparing this hypothesis to a (new) sample of data from the population, to determine whether the hypothesis should be accepted or rejected.</p>
 <p>In a study there are two hypotheses:</p>
 <ul>

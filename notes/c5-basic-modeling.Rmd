@@ -149,7 +149,7 @@ The main difference between this form and $y=mx+c$ is the presence of an error t
 
 The subscript $i$ denotes an individual observation in the data. Its presence in the equation is essentially for describing the exact position of each data point in the plot. E.g. the 5th observation of $y$ in the data is: $y_{i=5} = \beta_0 + \beta_1 x_{i=5} + \varepsilon_{i=5}$.  
 
-You can also express the regression equation in matrix array notation, which omits the $i$ subscript:
+You can also express the regression equation in vector/matrix notation, which omits the $i$ subscript:
 
 `r margin_note("Here bold symbols denote arrays.")`
 
