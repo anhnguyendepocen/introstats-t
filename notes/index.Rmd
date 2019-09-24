@@ -43,24 +43,24 @@ library(rsconnect)
 <a href="./about.html">about</a>  
 <a href="./problemsets.html">problem sets</a>  
 <a href="./datasets.html">data</a>  
-<a href="./addenda.html">addenda</a>
+<a href="./addenda.html">addenda</a> 
 
 \ 
 
 ### PART I --- ELEMENTS
 
-- chapter 1 -- <a href="./notes/c1-R.html">The R Environment</a>  
-- chapter 2 -- <a href="./notes/c2-getting-started.html">Getting Started with Data</a>  
-- chapter 3 -- <a href="./notes/c3-wrangle-visualize.html">Wrangling and Visualizing Data</a>  
-- chapter 4 -- <a href="./notes/c4-basic-analysis.html">Basic Data Analayis</a>  
-- chapter 5 -- <a href="./notes/c5-basic-modeling.html">Basic Data Modeling</a>   
-- chapter 6 -- <a href="./notes/c6-more-models.html">More Modeling Techniques</a>   
+- 1 -- <a href="./notes/c1-R.html">The R Environment</a>   
+- 2 -- <a href="./notes/c2-getting-started.html">Getting Started with Data</a>   
+- 3 -- <a href="./notes/c3-wrangle-visualize.html">Wrangling and Visualizing Data</a>   
+- 4 -- <a href="./notes/c4-basic-analysis.html">Basic Data Analayis</a>   
+- 5 -- <a href="./notes/c5-basic-modeling.html">Basic Data Modeling</a>    
+- 6 -- <a href="./notes/c6-more-models.html">More Modeling Techniques</a>    
 
 ### PART I $\frac 12$ --- A PROBABILISTIC BRIDGE
 
-- chapter 7 -- Elements of Probability
-- chapter 8 -- The Algebra of Random Variables
-- chapter 9 -- Distributions of Random Variables
+- 7 -- Elements of Probability  
+- 8 -- The Algebra of Random Variables  
+- 9 -- Distributions of Random Variables  
 
 ### PART II --- VARIABILITY
 

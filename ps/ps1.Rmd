@@ -24,7 +24,7 @@ In general, for tips on R Markdown formatting and syntax, check out the course n
 
 We encourage you to use R Markdown for this problem set---our instructions assume you do---but if you'd rather use a different environment, e.g. Jupyter notebooks (etc), you are welcome to. Just make sure your final report is presentable, code and all.  
 
-Any time you are confused about a command in R, use `help()` to bring up its documentation. If you get an error message you don't understand, use google---it's very likely someone else has encountered the same error and written about it on Stack Overflow or the like.  
+Any time you're confused about a command in R, use `help()` to bring up its documentation. If you get an error message you don't understand, use google---it's very likely someone else has encountered the same error and written about it on Stack Overflow or the like.  
 
 The packages used in this problem set are:
 
@@ -113,7 +113,7 @@ To make a plot use the `ggplot()` function (note although the package name is `g
 - `data` -- a data frame whose variables you want to plot 
 - `mapping` -- an aesthetic mapping for which variable(s) go on which axes  
 
-You'll also need to specify a geometric mapping, in the form `+ geom_XXX()`, to specify which variable(s) go on which axes (i.e. to geometrically map the data onto the $x$ and $y$ axes). The following examples will demonstrate how to use `ggplot()`.  
+You'll also need to specify a geometric mapping, in the form `+ geom_XXX()`, to specify the kind of plot you want (i.e. to geometrically map the data onto the $x$ and $y$ axes). The following examples will demonstrate how to use `ggplot()`.  
 
 \ 
 
@@ -328,7 +328,7 @@ $$s = \sqrt{\frac{1}{n-1} \sum_i^n (x_i - \bar x)^2}$$
 
 \ 
 
-9. (optional) Using your aggregated dataset, make a smoothed line plot of `avg_economic_freedom` on `year`, using different colors for each continent. What do you see? 
+9. (optional) Using your aggregated dataset, make a smoothed line plot of `avg_economic_freedom` on `year`, using a different color for each continent. What do you see? 
 
 \ 
 
@@ -343,7 +343,7 @@ A hypothesis test is usually formulated in terms of two hypotheses, as follows:
 - the **null hypothesis**, $H_0$, a proposed model for the true value of something
 - the **alternative hypothesis**, $H_1$, that the proposed model is not true  
 
-We say the test is **statistically significant** if the new data gives strong evidence to support the alternative hypothesis---i.e. if the data is an unlikely realization of the null hypothesis.   
+We say the test is **statistically significant** if the new data is an *unlikely* realization of the null hypothesis (i.e. if it gives strong evidence to support the alternative hypothesis).  
 
 Let's suppose that before you saw any of the economic freedom data, you hypothesized that the true mean economic freedom score in 2017 was 4.5. You now want to use the data you have to test this hypothesis.  
 \ 
@@ -437,7 +437,7 @@ You can use scatterplots to visualize the relationship between two numeric varia
 
 \ 
 
-**Correlation** is a measure of the *linear* association between two variables. A common measure of correlation is Pearson's correlation coefficient, denoted $r$, which takes a value between -1 and 1.  
+**Correlation** describes the *linear* association between two variables. A common measure of correlation is Pearson's correlation coefficient, denoted $r$, which takes a value between -1 and 1.  
 
 In R you can use `cor()` to compute Pearson's correlation coefficient between two variables.  
 
@@ -519,7 +519,7 @@ The intercept and slope, $b_0$ and $b_1$, are known as the **coefficients** or *
 In R you can use the `lm()` function to perform linear regression and compute the coefficients. It takes two arguments: 
 
 - `formula` -- the regression formula, specifying the reponse and predictor variables in the form `y ~ x`
-- `data` -- the dataset whose variables you are using for regression   
+- `data` -- the data frame whose variables you are using for regression   
 
 \ 
 
@@ -544,7 +544,7 @@ where you'll notice this is simply the equation of the regression line.
 
 \ 
 
-5. Predict the value of your chosen response variable for some arbitrary value of your explanatory variable. You don't need to write code to do this---the computation should be simple enough to do by hand (just plug in your coefficients to the linear function).    
+5. Predict the value of your chosen response variable for some arbitrary value of your explanatory variable. You don't need to write code to do this---the computation should be simple enough (just plug in your coefficients to the linear function).    
 
 
 
@@ -585,7 +585,7 @@ In a multiple regression model the coefficient on any one predictor describes it
 
 \ 
 
-8. Is the coefficient on your original predictor (the one in the simple model above) different in the multiple model? If so, can you think of a reason why?  
+8. Is the coefficient on your original predictor (the one in the simple model from q4) different in the multiple model? If so, can you think of a reason why?  
 
 
 
@@ -593,7 +593,7 @@ In a multiple regression model the coefficient on any one predictor describes it
 
 \ 
 
-9. Add a categorical variable to your multiply regression model and show the results (don't use country---try to choose one with relatively few categories, like continent). You'll see that R treats each category as a separate predictor with its own coefficient.  
+9. Add a categorical variable to your multiple regression model and show the results (don't use country---try to choose one with relatively few categories, like continent). You'll see that R treats each category as a separate predictor with its own coefficient.  
 
 ```{r}
 
